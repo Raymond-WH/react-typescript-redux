@@ -1,0 +1,4 @@
+@import '@scss/hairline.scss';
+.demo {
+  @include hairline('top',red);
+}

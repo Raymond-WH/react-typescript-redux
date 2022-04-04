@@ -5,6 +5,7 @@
 // 各个模块的Action
 
 import store from "@/store";
+import { ThunkAction } from "redux-thunk";
 
 // store的state的类型
 export type RootState = ReturnType<typeof store.getState>;

@@ -1,11 +1,14 @@
 import styles from './index.module.scss'
 import { NavBar, Form, Input, List, Button } from 'antd-mobile'
 import { useHistory } from 'react-router'
+import { useDispatch } from 'react-redux'
+import { Loginform } from '@/types/data'
+import { login } from '@/store/actions/login'
 export default function Login() {
   const history = useHistory()
-  const onFinish = (values: any) => { 
-    console.log(values);
-    
+  const dispatch = useDispatch()
+  const onFinish = (values: Loginform) => { 
+    dispatch(login(values))
   }
   return (
     <div className={styles.root}>

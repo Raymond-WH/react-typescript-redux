@@ -1,0 +1,77 @@
+// 导入 1px 边框的样式文件
+@import '@scss/hairline.scss';
+
+.root {
+  :global {
+    .login-form {
+      padding: 0 33px;
+      .title {
+        margin: 54px 0 13px 0;
+      }
+
+      .adm-list {
+        --align-items: end !important;
+      }
+      .adm-list-default {
+        border: none;
+      }
+      .adm-list-item {
+        padding: 0;
+      }
+      .adm-form {
+          --border-inner: none;
+          --border-top: none;
+          --border-bottom: none;
+        }
+      .login-item {
+        // 注意：因为 1px 边框样式使用了决定定位，所以，此处需要将设置为相对定位
+        position: relative;
+        // 为该元素设置 1px 边框
+        @include hairline(bottom, #f0f0f0);
+
+        > .adm-list-item-content {
+          height: 70px;
+        }
+      }
+      .adm-list-item-content {
+        position: relative;
+        border-bottom: none;
+      }
+      // 验证码
+      .login-code-extra {
+        > .adm-list-item-content {
+          align-items: center;
+          padding: 0;
+        }
+        .adm-list-item-content-extra {
+          position: absolute;
+          right: 0;
+          bottom: 16px;
+        }
+      }
+      .adm-input-wrapper {
+        --placeholder-color: #a5a6ab;
+      }
+      .code-extra {
+        color: #595769;
+        font-size: 14px;
+
+        &-disabled {
+          color: #a5a6ab;
+        }
+      }
+      .adm-list-item-description {
+        position: absolute;
+        bottom: -25px;
+      }
+
+      .login-submit {
+        height: 50px;
+        margin-top: 38px;
+        border: none;
+        font-size: 16px;
+        background: linear-gradient(315deg, #fe4f4f, #fc6627);
+      }
+    }
+  }
+}

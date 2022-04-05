@@ -7,6 +7,7 @@ import { getCode, login } from '@/store/actions/login'
 import { useEffect, useRef, useState } from 'react'
 import { FormInstance } from 'antd-mobile/es/components/form'
 import { InputRef } from 'antd-mobile/es/components/input'
+import { useCountDown } from 'ahooks'
 
 export default function Login() {
   const history = useHistory()
@@ -25,18 +26,23 @@ export default function Login() {
   const formRef = useRef<FormInstance>(null)
   const mobileRef = useRef<InputRef>(null)
   const [count, setCount] = useState(0)
-  // 定义一个清理定时器的函数
-  let timeRef = useRef(-1)
-  useEffect(() => {
-    if (count === 0) {
-      // 清理定时器
-      clearInterval(timeRef.current)
-    }
-  }, [count])
+  const [countDown] = useCountDown({
+    targetDate: count,
+  })
+  // // 定义一个清理定时器的函数
+  // let timeRef = useRef(-1)
+  // useEffect(() => {
+  //   if (count === 0) {
+  //     // 清理定时器
+  //     clearInterval(timeRef.current)
+  //   }
+  // }, [count])
   const onGetCode = async () => {
-
-    // 阻止验证码重复发送
-    if (count > 0) { 
+    // // 阻止验证码重复发送
+    // if (count > 0) {
+    //   return
+    // }
+    if (countDown > 0) {
       return
     }
     console.log('获取验证码')
@@ -54,19 +60,20 @@ export default function Login() {
     await dispatch(getCode(mobile))
     console.log('开启倒计时')
     // 开启倒计时
-    setCount(3)
-    timeRef.current = window.setInterval(() => {
-      setCount((newCount) => {
-        return newCount - 1
-      })
-    }, 1000)
+    setCount(Date.now() + 60 * 1000)
+    // setCount(60)
+    // timeRef.current = window.setInterval(() => {
+    //   setCount((newCount) => {
+    //     return newCount - 1
+    //   })
+    // }, 1000)
   }
-  // 组件销毁的时候，清理定时器
-  useEffect(() => {
-    return () => {
-      clearInterval(timeRef.current)
-    }
-  }, [])
+  // // 组件销毁的时候，清理定时器
+  // useEffect(() => {
+  //   return () => {
+  //     clearInterval(timeRef.current)
+  //   }
+  // }, [])
   return (
     <div className={styles.root}>
       <NavBar onBack={() => history.go(-1)}></NavBar>
@@ -105,7 +112,10 @@ export default function Login() {
             className="login-code-extra"
             extra={
               <span className="code-extra" onClick={onGetCode}>
-                {count === 0 ? '发送验证码' : `${count}s`}
+                {/* { count === 0 ? '获取验证码' : `${count}s`} */}
+                {countDown === 0
+                  ? '发送验证码'
+                  : `${Math.round(countDown / 1000)}s`}
               </span>
             }
           >

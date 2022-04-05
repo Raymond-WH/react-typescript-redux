@@ -3,12 +3,15 @@ import { NavBar, Form, Input, List, Button, Toast } from 'antd-mobile'
 import { useHistory } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { Loginform } from '@/types/data'
-import { login } from '@/store/actions/login'
+import { getCode, login } from '@/store/actions/login'
+import { useRef } from 'react'
+import { FormInstance } from 'antd-mobile/es/components/form'
+import { InputRef } from 'antd-mobile/es/components/input'
 
 export default function Login() {
   const history = useHistory()
   const dispatch = useDispatch()
-  const onFinish = async(values: Loginform) => {
+  const onFinish = async (values: Loginform) => {
     await dispatch(login(values))
     Toast.show({
       content: '登录成功',
@@ -16,6 +19,28 @@ export default function Login() {
     })
     // 跳转到首页
     history.push('/home')
+  }
+  // 获取验证码
+  const formRef = useRef<FormInstance>(null)
+  const mobileRef = useRef<InputRef>(null)
+  const onGetCode = async () => {
+    console.log('获取验证码');
+    
+    // 获取手机号
+    // 校验手机号是否合法
+    // 发送验证码
+    const mobile = formRef.current!.getFieldValue('mobile')
+    const error = formRef.current!.getFieldError('mobile')
+    if (!mobile || error.length>0) { 
+      // 让手机号输入框获取焦点
+      mobileRef.current!.focus()
+      return
+      
+      
+    }
+    await dispatch(getCode(mobile))
+    console.log('开启倒计时');
+    
   }
   return (
     <div className={styles.root}>
@@ -25,9 +50,13 @@ export default function Login() {
       <div className="login-form">
         <h2 className="title">账号登录</h2>
         {/* 失去焦点的时候以及改变的时候触发校验 */}
-        <Form validateTrigger={['onChange', 'onBlur']} onFinish={onFinish}>
+        <Form
+          ref={formRef}
+          validateTrigger={['onChange', 'onBlur']}
+          onFinish={onFinish}
+        >
           <Form.Item
-            initialValue="17634251475"
+            // initialValue="17634251475"
             className="login-item"
             name="mobile"
             rules={[
@@ -41,14 +70,18 @@ export default function Login() {
               },
             ]}
           >
-            <Input placeholder="请输入用户名" autoComplete="off"></Input>
+            <Input ref={ mobileRef} placeholder="请输入用户名" autoComplete="off"></Input>
           </Form.Item>
           <List.Item
             className="login-code-extra"
-            extra={<span className="code-extra">发送验证码</span>}
+            extra={
+              <span className="code-extra" onClick={onGetCode}>
+                发送验证码
+              </span>
+            }
           >
             <Form.Item
-              initialValue="246810"
+              // initialValue="246810"
               className="login-item"
               name="code"
               rules={[

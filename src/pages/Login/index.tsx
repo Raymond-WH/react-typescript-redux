@@ -34,6 +34,11 @@ export default function Login() {
     }
   }, [count])
   const onGetCode = async () => {
+
+    // 阻止验证码重复发送
+    if (count > 0) { 
+      return
+    }
     console.log('获取验证码')
 
     // 获取手机号

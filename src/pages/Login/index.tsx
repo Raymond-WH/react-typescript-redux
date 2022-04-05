@@ -4,7 +4,7 @@ import { useHistory } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { Loginform } from '@/types/data'
 import { getCode, login } from '@/store/actions/login'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { FormInstance } from 'antd-mobile/es/components/form'
 import { InputRef } from 'antd-mobile/es/components/input'
 
@@ -21,27 +21,47 @@ export default function Login() {
     history.push('/home')
   }
   // 获取验证码
+
   const formRef = useRef<FormInstance>(null)
   const mobileRef = useRef<InputRef>(null)
+  const [count, setCount] = useState(0)
+  // 定义一个清理定时器的函数
+  let timeRef = useRef(-1)
+  useEffect(() => {
+    if (count === 0) {
+      // 清理定时器
+      clearInterval(timeRef.current)
+    }
+  }, [count])
   const onGetCode = async () => {
-    console.log('获取验证码');
-    
+    console.log('获取验证码')
+
     // 获取手机号
     // 校验手机号是否合法
     // 发送验证码
     const mobile = formRef.current!.getFieldValue('mobile')
     const error = formRef.current!.getFieldError('mobile')
-    if (!mobile || error.length>0) { 
+    if (!mobile || error.length > 0) {
       // 让手机号输入框获取焦点
       mobileRef.current!.focus()
       return
-      
-      
     }
     await dispatch(getCode(mobile))
-    console.log('开启倒计时');
-    
+    console.log('开启倒计时')
+    // 开启倒计时
+    setCount(3)
+    timeRef.current = window.setInterval(() => {
+      setCount((newCount) => {
+        return newCount - 1
+      })
+    }, 1000)
   }
+  // 组件销毁的时候，清理定时器
+  useEffect(() => {
+    return () => {
+      clearInterval(timeRef.current)
+    }
+  }, [])
   return (
     <div className={styles.root}>
       <NavBar onBack={() => history.go(-1)}></NavBar>
@@ -70,13 +90,17 @@ export default function Login() {
               },
             ]}
           >
-            <Input ref={ mobileRef} placeholder="请输入用户名" autoComplete="off"></Input>
+            <Input
+              ref={mobileRef}
+              placeholder="请输入用户名"
+              autoComplete="off"
+            ></Input>
           </Form.Item>
           <List.Item
             className="login-code-extra"
             extra={
               <span className="code-extra" onClick={onGetCode}>
-                发送验证码
+                {count === 0 ? '发送验证码' : `${count}s`}
               </span>
             }
           >

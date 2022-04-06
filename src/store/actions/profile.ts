@@ -13,3 +13,16 @@ export const getUser = ():RootThunkAction => {
     })
   }
 }
+
+
+// 用户个人信息
+export const getUserProfile = (): RootThunkAction => { 
+  return async (dispatch) => { 
+    const res = await request.get('/user/profile')
+    console.log(res);
+    dispatch({
+      type: 'profile/getUserProfile',
+      payload: res.data.data
+    })
+  }
+}

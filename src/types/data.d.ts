@@ -15,7 +15,7 @@ export type Token = {
   refresh_token: string;
 }
 
-// 我的 - 个人信息
+// 我的 - 信息
 export type User = {
   id: string
   name: string
@@ -24,4 +24,14 @@ export type User = {
   follow_count: number
   fans_count: number
   like_count: number
+}
+// 用户个人信息
+export type UserProfile = {
+  id: string
+  photo: string
+  name: string
+  mobile: string
+  gender: number
+  birthday: string
+  intro: string
 }

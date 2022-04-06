@@ -2,6 +2,11 @@ import styles from './index.module.scss'
 import { TabBar } from 'antd-mobile'
 import Icon from '@/components/icon'
 import { useHistory, useLocation } from 'react-router'
+import { Route, Switch } from 'react-router-dom'
+import Home from '../Home'
+import Question from '../Question'
+import Profile from '../Profile'
+import Video from '../Video'
 const tabs = [
   { path: '/home', icon: 'iconbtn_home', text: '首页' },
   { path: '/home/question', icon: 'iconbtn_qa', text: '问答' },
@@ -21,6 +26,20 @@ export default function Layout() {
   }  
   return (
     <div className={styles.root}>
+      <Switch>
+        <Route exact path="/home">
+          <Home></Home>
+        </Route>
+        <Route path="/home/question">
+          <Question></Question>
+        </Route>
+        <Route path="/home/video">
+          <Video></Video>
+        </Route>
+        <Route path="/home/profile">
+          <Profile></Profile>
+        </Route>
+      </Switch>
       <TabBar
         className="tab-bar"
         onChange={onChangeRoute}

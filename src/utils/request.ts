@@ -1,6 +1,7 @@
 // 封装axios
 import { Toast } from 'antd-mobile'
 import axios, { AxiosError } from 'axios'
+import { getToken } from './storage'
 
 const instance = axios.create({
   baseURL: 'http://geek.itheima.net/v1_0/',
@@ -10,6 +11,11 @@ const instance = axios.create({
 // 添加请求拦截器
 instance.interceptors.request.use(
   function (config) {
+    // 拿token
+    const token = getToken()
+    if (token.token) { 
+      config.headers!.Authorization = `Bearer ${token.token}`
+    }
     // 在发送请求之前做些什么
     return config
   },

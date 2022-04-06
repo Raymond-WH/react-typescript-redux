@@ -9,7 +9,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <h1>App跟组件</h1>
+        {/* <h1>App跟组件</h1>
         <ul>
           <li>
             <Link to="/home">布局页面</Link>
@@ -17,7 +17,7 @@ function App() {
           <li>
             <Link to="/login">登录页面</Link>
           </li>
-        </ul>
+        </ul> */}
         {/* 配置路由规则 */}
         <Switch>
           {/* 首页页面 */}

@@ -1,0 +1,26 @@
+@import '@scss/hairline.scss';
+
+.root {
+  height: 100%;
+
+  :global {
+    // 底部 tabbar 的样式
+    .tab-bar {
+      @include hairline(top, #f0f0f0);
+      position: fixed;
+      z-index: 1;
+      bottom: 0;
+      width: 100%;
+      height: 46px;
+      // left: 0;
+      // right: 0;
+      background-color: #f7f8fa;
+      // background-color:red;
+
+      .icon {
+        color: #fc6627;
+        // background-color: red;
+      }
+    }
+  }
+}

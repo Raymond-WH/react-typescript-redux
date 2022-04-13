@@ -1,13 +1,12 @@
 import { getUserProfile } from '@/store/actions/profile'
-import { RootState } from '@/types/store'
-import { Button, List, DatePicker, NavBar } from 'antd-mobile'
+import { Button, List, DatePicker, NavBar,Popup } from 'antd-mobile'
 import classNames from 'classnames'
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
 import styles from './index.module.scss'
 import { useInitialState} from '@/utils/hooks'
+import { useState } from 'react'
+import EditInput from './components/EditInput'
 const Item = List.Item
 
 const ProfileEdit = () => {
@@ -21,9 +20,26 @@ const ProfileEdit = () => {
   //   return state.profile
   // })
   // console.log(userProfile)
-  const {userProfile} = useInitialState(getUserProfile,'profile')
+  const { userProfile } = useInitialState(getUserProfile, 'profile')
+  const [showInput, setShowInput] = useState<{
+    visible: boolean,
+    type:''|'name'|'intro'
+  }>({
+    visible: false,
+    type:''
+  })
+  // 关闭弹层
+  const hideInput = () => { 
+    setShowInput({
+      visible: false,
+      type:''
+    })
+  }
   return (
     <div className={styles.root}>
+      <Popup visible={showInput.visible} position='right' bodyStyle={{ width: '100vw' }}>
+        <EditInput hideInput={ hideInput}></EditInput> 
+      </Popup>
       <div className="content">
         {/* 标题 */}
         <NavBar
@@ -54,10 +70,17 @@ const ProfileEdit = () => {
             >
               头像
             </Item>
-            <Item arrow extra={userProfile.name}>
+            <Item arrow extra={userProfile.name} onClick={() => setShowInput({
+              visible: true,
+              type: 'name'
+            })}>
               昵称
             </Item>
             <Item
+              onClick={() => setShowInput({
+                visible: true,
+                type: 'intro'
+              })}
               arrow
               extra={
                 <span className={classNames('intro', 'normal')}>

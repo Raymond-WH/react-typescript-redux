@@ -74,6 +74,7 @@ export default function Login() {
   //     clearInterval(timeRef.current)
   //   }
   // }, [])
+  
   return (
     <div className={styles.root}>
       <NavBar onBack={() => history.go(-1)}></NavBar>
@@ -86,6 +87,10 @@ export default function Login() {
           ref={formRef}
           validateTrigger={['onChange', 'onBlur']}
           onFinish={onFinish}
+          initialValues={{
+            mobile: '17634275135',
+            code: '246810',
+          }}
         >
           <Form.Item
             // initialValue="17634251475"

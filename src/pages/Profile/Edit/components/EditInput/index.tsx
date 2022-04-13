@@ -1,13 +1,31 @@
+import { RootState } from '@/types/store'
 import { Input, NavBar, TextArea } from 'antd-mobile'
+import { InputRef } from 'antd-mobile/es/components/input'
+import { TextAreaRef } from 'antd-mobile/es/components/text-area'
+import { useEffect, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 import styles from './index.module.scss'
 type Props = {
-  hideInput: () => void,
+  hideInput: () => void
   type: '' | 'name' | 'intro'
 }
-const EditInput = ({ hideInput,type}:Props) => {
-  
+const EditInput = ({ hideInput, type }: Props) => {
+  const { userProfile } = useSelector((state: RootState) => state.profile)
+  const [value, setValue] = useState(
+    type === 'name' ? userProfile.name : userProfile.intro
+  )
+  const inputRef = useRef<InputRef>(null)
+  const textRef = useRef<TextAreaRef>(null)
 
+  useEffect(() => { 
+    if (type === 'name') {
+      inputRef.current?.focus()
+    } else {
+      textRef.current?.focus()
+    }
+    document.querySelector('textarea')?.setSelectionRange(-1, -1)
+  })
   return (
     <div className={styles.root}>
       <NavBar
@@ -23,10 +41,23 @@ const EditInput = ({ hideInput,type}:Props) => {
 
         {type === 'name' ? (
           <div className="input-wrap">
-            <Input placeholder="请输入昵称" />
+            <Input
+              ref={inputRef}
+              placeholder="请输入昵称"
+              value={value}
+              onChange={(e) => setValue(e)}
+            />
           </div>
         ) : (
-          <TextArea className='textarea' placeholder='请输入简介' showCount maxLength={99}></TextArea>
+          <TextArea
+            ref={textRef}
+            value={value}
+            className="textarea"
+            placeholder="请输入简介"
+            showCount
+            maxLength={99}
+            onChange={(e) => setValue(e)}
+          ></TextArea>
         )}
       </div>
     </div>

@@ -1,5 +1,5 @@
-import { getUserProfile } from '@/store/actions/profile'
-import { Button, List, DatePicker, NavBar, Popup } from 'antd-mobile'
+import { getUserProfile, updateUserProfile } from '@/store/actions/profile'
+import { Button, List, DatePicker, NavBar, Popup, Toast } from 'antd-mobile'
 import classNames from 'classnames'
 import { useHistory } from 'react-router'
 
@@ -7,6 +7,7 @@ import styles from './index.module.scss'
 import { useInitialState } from '@/utils/hooks'
 import { useState } from 'react'
 import EditInput from './components/EditInput'
+import { useDispatch } from 'react-redux'
 const Item = List.Item
 
 const ProfileEdit = () => {
@@ -20,6 +21,7 @@ const ProfileEdit = () => {
   //   return state.profile
   // })
   // console.log(userProfile)
+  const dispatch = useDispatch()
   const { userProfile } = useInitialState(getUserProfile, 'profile')
   const [showInput, setShowInput] = useState<{
     visible: boolean
@@ -35,6 +37,16 @@ const ProfileEdit = () => {
       type: '',
     })
   }
+
+  const onUpdate = async(type: string, value: string) => {
+    console.log(type, value)
+    //发送请求
+    await dispatch(updateUserProfile(type, value))
+    // 提示消息
+    Toast.show('修改成功')
+    // 关闭弹层
+    hideInput()
+  }
   return (
     <div className={styles.root}>
       <Popup
@@ -47,7 +59,7 @@ const ProfileEdit = () => {
         {/* {showInput.visible && (
           <EditInput hideInput={hideInput} type={showInput.type}></EditInput>
         )} */}
-        <EditInput hideInput={hideInput} type={showInput.type}></EditInput>
+        <EditInput onUpdate={ onUpdate} hideInput={hideInput} type={showInput.type}></EditInput>
       </Popup>
       <div className="content">
         {/* 标题 */}

@@ -26,3 +26,16 @@ export const getUserProfile = (): RootThunkAction => {
     })
   }
 }
+
+//修改用户个人信息
+export const updateUserProfile = (key:string,value:string): RootThunkAction => { 
+  return async (dispatch) => { 
+    const res = await request.patch('/user/profile', {
+      // 属性名表达式
+      [key]: value
+    })
+    console.log(res);
+    // 重新获取数据
+    dispatch(getUserProfile())
+  }
+}

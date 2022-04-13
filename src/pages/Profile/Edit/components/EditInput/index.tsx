@@ -1,10 +1,11 @@
-import { Input, NavBar } from 'antd-mobile'
+import { Input, NavBar, TextArea } from 'antd-mobile'
 
 import styles from './index.module.scss'
 type Props = {
-  hideInput: () => void
+  hideInput: () => void,
+  type: '' | 'name' | 'intro'
 }
-const EditInput = ({ hideInput}:Props) => {
+const EditInput = ({ hideInput,type}:Props) => {
   
 
   return (
@@ -14,15 +15,19 @@ const EditInput = ({ hideInput}:Props) => {
         className="navbar"
         right={<span className="commit-btn">提交</span>}
       >
-        编辑昵称
+        编辑{type === 'name' ? '昵称' : '简介'}
       </NavBar>
 
       <div className="edit-input-content">
-        <h3>昵称</h3>
+        <h3>编辑{type === 'name' ? '昵称' : '简介'}</h3>
 
-        <div className="input-wrap">
-          <Input placeholder="请输入" />
-        </div>
+        {type === 'name' ? (
+          <div className="input-wrap">
+            <Input placeholder="请输入昵称" />
+          </div>
+        ) : (
+          <TextArea className='textarea' placeholder='请输入简介' showCount maxLength={99}></TextArea>
+        )}
       </div>
     </div>
   )

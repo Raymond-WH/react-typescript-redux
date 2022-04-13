@@ -38,7 +38,7 @@ const ProfileEdit = () => {
   return (
     <div className={styles.root}>
       <Popup visible={showInput.visible} position='right' bodyStyle={{ width: '100vw' }}>
-        <EditInput hideInput={ hideInput}></EditInput> 
+        <EditInput hideInput={hideInput} type={ showInput.type}></EditInput> 
       </Popup>
       <div className="content">
         {/* 标题 */}

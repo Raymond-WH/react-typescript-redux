@@ -7,21 +7,21 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 
 import styles from './index.module.scss'
-
+import { useInitialState} from '@/utils/hooks'
 const Item = List.Item
 
 const ProfileEdit = () => {
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(getUserProfile())
-  }, [dispatch])
+  // const dispatch = useDispatch()
+  // useEffect(() => {
+  //   dispatch(getUserProfile())
+  // }, [dispatch])
   const history = useHistory()
-  const {userProfile} = useSelector((state: RootState) => { 
+  // const {userProfile} = useSelector((state: RootState) => { 
     
-    return state.profile
-  })
-  console.log(userProfile)
-  
+  //   return state.profile
+  // })
+  // console.log(userProfile)
+  const {userProfile} = useInitialState(getUserProfile,'profile')
   return (
     <div className={styles.root}>
       <div className="content">

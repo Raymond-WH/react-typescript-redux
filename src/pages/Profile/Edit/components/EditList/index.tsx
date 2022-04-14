@@ -15,7 +15,7 @@ const EditList = ({ hideList,type,onUpdate}:Props) => {
       ) : (
         <>
           <div className="list-item">拍照</div>
-          <div className="list-item">本地选择</div>
+          <div className="list-item" onClick={()=>onUpdate('photo','1')}>本地选择</div>
         </>
       )}
 

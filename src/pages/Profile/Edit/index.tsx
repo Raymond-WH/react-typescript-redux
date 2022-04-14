@@ -1,11 +1,11 @@
-import { getUserProfile, updateUserProfile } from '@/store/actions/profile'
+import { getUserProfile, updateUserPhoto, updateUserProfile } from '@/store/actions/profile'
 import { Button, List, DatePicker, NavBar, Popup, Toast } from 'antd-mobile'
 import classNames from 'classnames'
 import { useHistory } from 'react-router'
 
 import styles from './index.module.scss'
 import { useInitialState } from '@/utils/hooks'
-import { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import EditInput from './components/EditInput'
 import { useDispatch } from 'react-redux'
 import EditList from './components/EditList'
@@ -38,9 +38,15 @@ const ProfileEdit = () => {
       type: '',
     })
   }
-
+  const fileRef = useRef<HTMLInputElement>(null)
   const onUpdate = async (type: string, value: string) => {
     console.log(type, value)
+    if (type === 'photo') { 
+      // console.log('拍照');
+      fileRef.current?.click()
+      return
+      
+    }
     //发送请求
     await dispatch(updateUserProfile(type, value))
     // 提示消息
@@ -64,8 +70,25 @@ const ProfileEdit = () => {
       type: '',
     })
   }
+  // 修改头像
+  const changePhoto = async(e:React.ChangeEvent<HTMLInputElement>) => { 
+    // 获取选择的文件
+    const file = e.target.files![0]
+    console.log(file);
+    
+    // 需要上传这张图片
+    const fd = new FormData()
+    fd.append('photo', file)
+    // 发送请求
+    await dispatch(updateUserPhoto(fd))
+    // 提示消息
+    Toast.show('修改成功')
+    // 关闭弹层
+    hideList()
+  }
   return (
     <div className={styles.root}>
+      <input type="file" onChange={changePhoto} hidden ref={fileRef}/>
       {/* 右侧弹层 */}
       <Popup
         visible={showInput.visible}

@@ -36,6 +36,15 @@ export const updateUserProfile = (key:string,value:string): RootThunkAction => {
     })
     console.log(res);
     // 重新获取数据
-    dispatch(getUserProfile())
+    await dispatch(getUserProfile())
+  }
+}
+
+// 修改用户图片
+export const updateUserPhoto=(fd: FormData): RootThunkAction => { 
+  return async (dispatch) => {
+    await request.patch('/user/photo', fd)
+    // 重新获取数据
+    await dispatch(getUserProfile())
   }
 }

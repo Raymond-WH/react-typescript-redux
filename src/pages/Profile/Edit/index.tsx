@@ -9,6 +9,7 @@ import React, { useRef, useState } from 'react'
 import EditInput from './components/EditInput'
 import { useDispatch } from 'react-redux'
 import EditList from './components/EditList'
+import dayjs from 'dayjs'
 const Item = List.Item
 
 const ProfileEdit = () => {
@@ -86,9 +87,18 @@ const ProfileEdit = () => {
     // 关闭弹层
     hideList()
   }
+  // 生日
+  const [showBirthday, setShowBirthday] = useState(false)
+  const onBirthdayShow = () => { 
+    setShowBirthday(true)
+  }
+  const onBirthdayHide = () => { 
+    setShowBirthday(false)
+  }
+  
   return (
     <div className={styles.root}>
-      <input type="file" onChange={changePhoto} hidden ref={fileRef}/>
+      <input type="file" onChange={changePhoto} hidden ref={fileRef} />
       {/* 右侧弹层 */}
       <Popup
         visible={showInput.visible}
@@ -193,17 +203,21 @@ const ProfileEdit = () => {
             >
               性别
             </Item>
-            <Item arrow extra={userProfile.birthday}>
+            <Item arrow extra={userProfile.birthday} onClick={ onBirthdayShow}>
               生日
             </Item>
           </List>
 
           <DatePicker
-            visible={false}
-            value={new Date()}
+            visible={showBirthday}
+            onClose={onBirthdayHide}
+            value={new Date(userProfile.birthday)}
             title="选择年月日"
-            min={new Date(1900, 0, 1, 0, 0, 0)}
+            min={new Date('1900-01-01')}
             max={new Date()}
+            onConfirm={(value) => { 
+              onUpdate('birthday',dayjs(value).format('YYYY-MM-DD'))
+            }}
           />
         </div>
 

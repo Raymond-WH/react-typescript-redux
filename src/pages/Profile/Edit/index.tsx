@@ -117,7 +117,7 @@ const ProfileEdit = () => {
           </List>
 
           <List className="profile-list">
-            <Item arrow extra={userProfile.gender === 0 ? '男' : '女'}>
+            <Item arrow extra={userProfile.gender === 0 ? '男' : '女'} >
               性别
             </Item>
             <Item arrow extra={userProfile.birthday}>

@@ -8,7 +8,7 @@ import ProfileEdit from './pages/Profile/Edit'
 function App() {
   return (
     <Router>
-      <div className="App">
+      <div className="app">
         {/* <h1>App跟组件</h1>
         <ul>
           <li>

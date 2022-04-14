@@ -8,6 +8,7 @@ import { useInitialState } from '@/utils/hooks'
 import { useState } from 'react'
 import EditInput from './components/EditInput'
 import { useDispatch } from 'react-redux'
+import EditList from './components/EditList'
 const Item = List.Item
 
 const ProfileEdit = () => {
@@ -38,7 +39,7 @@ const ProfileEdit = () => {
     })
   }
 
-  const onUpdate = async(type: string, value: string) => {
+  const onUpdate = async (type: string, value: string) => {
     console.log(type, value)
     //发送请求
     await dispatch(updateUserProfile(type, value))
@@ -46,9 +47,26 @@ const ProfileEdit = () => {
     Toast.show('修改成功')
     // 关闭弹层
     hideInput()
+    hideList()
+  }
+  // 弹层底部
+  const [showList, setShowList] = useState<{
+    visible: boolean
+    type: '' | 'gender' | 'photo'
+  }>({
+    visible: false,
+    type: '',
+  })
+  // 隐藏底部弹层
+  const hideList = () => {
+    setShowList({
+      visible: false,
+      type: '',
+    })
   }
   return (
     <div className={styles.root}>
+      {/* 右侧弹层 */}
       <Popup
         visible={showInput.visible}
         position="right"
@@ -59,7 +77,24 @@ const ProfileEdit = () => {
         {/* {showInput.visible && (
           <EditInput hideInput={hideInput} type={showInput.type}></EditInput>
         )} */}
-        <EditInput onUpdate={ onUpdate} hideInput={hideInput} type={showInput.type}></EditInput>
+        <EditInput
+          onUpdate={onUpdate}
+          hideInput={hideInput}
+          type={showInput.type}
+        ></EditInput>
+      </Popup>
+      {/* 下方弹层 */}
+      <Popup
+        onMaskClick={hideList}
+        visible={showList.visible}
+        position="bottom"
+        destroyOnClose
+      >
+        <EditList
+          hideList={hideList}
+          type={showList.type}
+          onUpdate={onUpdate}
+        ></EditList>
       </Popup>
       <div className="content">
         {/* 标题 */}
@@ -83,6 +118,12 @@ const ProfileEdit = () => {
                 </span>
               }
               arrow
+              onClick={() =>
+                setShowList({
+                  visible: true,
+                  type: 'photo',
+                })
+              }
             >
               头像
             </Item>
@@ -117,7 +158,16 @@ const ProfileEdit = () => {
           </List>
 
           <List className="profile-list">
-            <Item arrow extra={userProfile.gender === 0 ? '男' : '女'} >
+            <Item
+              arrow
+              extra={userProfile.gender === 0 ? '男' : '女'}
+              onClick={() =>
+                setShowList({
+                  visible: true,
+                  type: 'gender',
+                })
+              }
+            >
               性别
             </Item>
             <Item arrow extra={userProfile.birthday}>

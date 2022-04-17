@@ -35,3 +35,4 @@ export type UserProfile = {
   birthday: string
   intro: string
 }
+

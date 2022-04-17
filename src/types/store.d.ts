@@ -18,6 +18,8 @@ export type RootThunkAction = ThunkAction<void, RootState, unknown, RootAction>;
 export type LoginAction = {
   type: 'login/login',
   payload: Token
+} | {
+  type: 'login/logout',
 }
 
 export type ProfileAction =

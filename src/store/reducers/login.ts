@@ -10,6 +10,9 @@ const login = (state = initialState, action: LoginAction): Token => {
     
     return action.payload
   }
+  if (action.type === 'login/logout') { 
+    return {} as Token
+  }
   return state
 }
 

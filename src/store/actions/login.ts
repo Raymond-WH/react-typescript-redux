@@ -1,7 +1,7 @@
 import { ApiResponse, Loginform, Token } from "@/types/data";
-import { RootThunkAction } from "@/types/store";
+import { LoginAction, RootThunkAction } from "@/types/store";
 import request from '@/utils/request';
-import { setToken } from "@/utils/storage";
+import { removeToken, setToken } from "@/utils/storage";
 
 export const login = (values:Loginform):RootThunkAction => { 
   return async dispath => { 
@@ -19,5 +19,13 @@ export const login = (values:Loginform):RootThunkAction => {
 export const getCode = (mobile:string) => { 
   return async () => {
     await request.get(`/sms/codes/${mobile}`)
+  }
+}
+
+// 退出登录
+export const logout=(): LoginAction=>{ 
+  removeToken()
+  return {
+    type: 'login/logout'
   }
 }

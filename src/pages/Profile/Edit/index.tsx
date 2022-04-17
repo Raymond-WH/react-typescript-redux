@@ -1,5 +1,5 @@
 import { getUserProfile, updateUserPhoto, updateUserProfile } from '@/store/actions/profile'
-import { Button, List, DatePicker, NavBar, Popup, Toast } from 'antd-mobile'
+import { Button, List, DatePicker, NavBar, Popup, Toast, Dialog } from 'antd-mobile'
 import classNames from 'classnames'
 import { useHistory } from 'react-router'
 
@@ -10,6 +10,7 @@ import EditInput from './components/EditInput'
 import { useDispatch } from 'react-redux'
 import EditList from './components/EditList'
 import dayjs from 'dayjs'
+import { logout } from '@/store/actions/login'
 const Item = List.Item
 
 const ProfileEdit = () => {
@@ -95,7 +96,19 @@ const ProfileEdit = () => {
   const onBirthdayHide = () => { 
     setShowBirthday(false)
   }
-  
+  // 退出功能
+  const logoutFn = () => { 
+    Dialog.confirm({
+      title: '温馨提示',
+      content: '确定退出登录吗？',
+      onConfirm() { 
+        // 清楚token
+        dispatch(logout())
+        // 跳转到登录页
+        history.push('/login')
+      }
+    })
+  }
   return (
     <div className={styles.root}>
       <input type="file" onChange={changePhoto} hidden ref={fileRef} />
@@ -222,7 +235,7 @@ const ProfileEdit = () => {
         </div>
 
         <div className="logout">
-          <Button className="btn">退出登录</Button>
+          <Button className="btn" onClick={logoutFn}>退出登录</Button>
         </div>
       </div>
     </div>

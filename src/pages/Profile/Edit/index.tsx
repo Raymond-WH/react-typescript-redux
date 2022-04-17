@@ -19,6 +19,8 @@ const ProfileEdit = () => {
   //   dispatch(getUserProfile())
   // }, [dispatch])
   const history = useHistory()
+  console.log(history);
+  
   // const {userProfile} = useSelector((state: RootState) => {
 
   //   return state.profile

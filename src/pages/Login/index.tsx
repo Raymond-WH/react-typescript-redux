@@ -8,9 +8,11 @@ import { useEffect, useRef, useState } from 'react'
 import { FormInstance } from 'antd-mobile/es/components/form'
 import { InputRef } from 'antd-mobile/es/components/input'
 import { useCountDown } from 'ahooks'
-
+import { useLocation} from 'react-router-dom'
 export default function Login() {
   const history = useHistory()
+  console.log(history);
+  const location = useLocation<{from:string}>()
   const dispatch = useDispatch()
   const onFinish = async (values: Loginform) => {
     await dispatch(login(values))
@@ -19,7 +21,11 @@ export default function Login() {
       icon: 'success',
     })
     // 跳转到首页
-    history.push('/home')
+    const { from } = location.state || { from: '/home'  }
+    console.log(history.location.state);
+    
+    // history.push(from)
+    history.replace(from)
   }
   // 获取验证码
 

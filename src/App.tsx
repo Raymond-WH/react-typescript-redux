@@ -1,10 +1,12 @@
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom'
 import { Redirect } from 'react-router-dom'
 import './App.scss'
+import PrivateRoute from './components/PrivateRoute'
 import Layout from './pages/Layout'
 import Login from './pages/Login'
 import NotFound from './pages/NotFound'
 import ProfileEdit from './pages/Profile/Edit'
+import { hasToken } from './utils/storage'
 function App() {
   return (
     <Router>
@@ -35,11 +37,23 @@ function App() {
             path="/"
             render={() => <Redirect to="/home"></Redirect>}
           ></Route>
-          <Route path='/profile/edit'>
+          <PrivateRoute path="/profile/edit">
             <ProfileEdit></ProfileEdit>
-          </Route>
+          </PrivateRoute>
+          {/* <Route
+            path="/profile/edit"
+            render={() => {
+              if (hasToken()) {
+                return <ProfileEdit></ProfileEdit>
+              } else {
+                return <Redirect to="/login"></Redirect>
+              }
+            }}
+          ></Route> */}
           {/* 404页面 */}
-          <Route path="*"><NotFound></NotFound></Route>
+          <Route path="*">
+            <NotFound></NotFound>
+          </Route>
         </Switch>
       </div>
     </Router>

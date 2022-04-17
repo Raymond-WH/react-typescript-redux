@@ -7,6 +7,7 @@ import Home from '../Home'
 import Question from '../Question'
 import Profile from '../Profile'
 import Video from '../Video'
+import PrivateRoute from '@/components/PrivateRoute'
 const tabs = [
   { path: '/home', icon: 'iconbtn_home', text: '首页' },
   { path: '/home/question', icon: 'iconbtn_qa', text: '问答' },
@@ -36,9 +37,9 @@ export default function Layout() {
         <Route path="/home/video">
           <Video></Video>
         </Route>
-        <Route path="/home/profile">
+        <PrivateRoute path="/home/profile">
           <Profile></Profile>
-        </Route>
+        </PrivateRoute>
       </Switch>
       <TabBar
         className="tab-bar"

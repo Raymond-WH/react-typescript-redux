@@ -85,6 +85,8 @@ instance.interceptors.response.use(
           // 刷新token失败
           console.log('刷新token失败')
         }
+        // token 没问题重新发送请求
+        return instance(error.config)
       } else {
         // 401没有token
         console.log('跳转到登录页面')

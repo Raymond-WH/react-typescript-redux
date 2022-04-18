@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom'
+import { Router, Link, Route, Switch } from 'react-router-dom'
 import { Redirect } from 'react-router-dom'
 import './App.scss'
 import PrivateRoute from './components/PrivateRoute'
@@ -6,11 +6,11 @@ import Layout from './pages/Layout'
 import Login from './pages/Login'
 import NotFound from './pages/NotFound'
 import ProfileEdit from './pages/Profile/Edit'
-import { hasToken } from './utils/storage'
+import history from './utils/history'
 function App() {
   return (
-    <Router>
-      <div className="app">
+    <Router history={ history}>
+      <div className="app"> 
         {/* <h1>App跟组件</h1>
         <ul>
           <li>

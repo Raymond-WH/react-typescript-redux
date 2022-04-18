@@ -4,6 +4,7 @@ import axios, { AxiosError } from 'axios'
 import { getToken, setToken } from './storage'
 import store from '@/store'
 import { logout } from '@/store/actions/login'
+import history from './history'
 const baseURL = 'http://geek.itheima.net/v1_0/'
 const instance = axios.create({
   baseURL,
@@ -92,14 +93,17 @@ instance.interceptors.response.use(
 
           store.dispatch(logout())
           // 跳转登录页
-          window.location.href = '/login'
+          // window.location.href = '/login'
+          history.replace('/login', {from:history.location.pathname})
           console.log('刷新token失败')
         }
         
       } else {
         // 401没有token
         console.log('跳转到登录页面')
-          window.location.href = '/login'
+          // window.location.href = '/login'
+          history.replace('/login', { from: history.location.pathname })
+        
 
       }
     }

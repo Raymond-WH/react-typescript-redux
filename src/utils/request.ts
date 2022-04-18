@@ -3,6 +3,7 @@ import { Toast } from 'antd-mobile'
 import axios, { AxiosError } from 'axios'
 import { getToken, setToken } from './storage'
 import store from '@/store'
+import { logout } from '@/store/actions/login'
 const baseURL = 'http://geek.itheima.net/v1_0/'
 const instance = axios.create({
   baseURL,
@@ -66,30 +67,40 @@ instance.interceptors.response.use(
               Authorization: `Bearer ${token.refresh_token}`,
             },
           })
-          
+
           // 刷新token成功
           console.log('res', res)
           // 将新的token保存的redux中
           store.dispatch({
             type: 'login/login',
-            payload:{
-              token:res.data.data.token, 
-              refresh_token:token.refresh_token,
-            }
+            payload: {
+              token: res.data.data.token,
+              refresh_token: token.refresh_token,
+            },
           })
           setToken({
             token: res.data.data.token,
             refresh_token: token.refresh_token,
           })
+          // token 没问题重新发送请求
+        return instance(error.config)
+
         } catch {
           // 刷新token失败
+          // 跳转到登录页
+          // 移除token
+
+          store.dispatch(logout())
+          // 跳转登录页
+          window.location.href = '/login'
           console.log('刷新token失败')
         }
-        // token 没问题重新发送请求
-        return instance(error.config)
+        
       } else {
         // 401没有token
         console.log('跳转到登录页面')
+          window.location.href = '/login'
+
       }
     }
     Toast.show(error.response.data.message)

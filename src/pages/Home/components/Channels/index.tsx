@@ -2,14 +2,16 @@ import classnames from 'classnames'
 
 import Icon from '@/components/icon'
 import styles from './index.module.scss'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/types/store'
-import {differenceBy} from 'lodash'
+import { differenceBy } from 'lodash'
+import { changeActive } from '@/store/actions/channel'
 type Props = {
   hide: () => void
 }
 const Channels = ({ hide }: Props) => {
-  const { userChannels, allChannels } = useSelector(
+  const dispatch = useDispatch()
+  const { userChannels, allChannels, active } = useSelector(
     (state: RootState) => state.channel
   )
   // 获取推荐的频道=所有频道-用户频道
@@ -33,10 +35,19 @@ const Channels = ({ hide }: Props) => {
             <span className="channel-item-title-extra">点击进入频道</span>
             <span className="channel-item-edit">编辑</span>
           </div>
+          {/* 渲染我的频道 */}
           <div className="channel-list">
             {/* 选中时，添加类名 selected */}
             {userChannels.map((item) => (
-              <span className={classnames('channel-list-item')} key={item.id}>
+              <span
+                className={classnames('channel-list-item', {selected:item.id===active})}
+                key={item.id}
+                onClick={() => {
+                  dispatch(changeActive(item.id))
+                  // 关闭弹层
+                  hide()
+                }}
+              >
                 {item.name}
                 <Icon type="iconbtn_tag_close" />
               </span>
@@ -50,6 +61,7 @@ const Channels = ({ hide }: Props) => {
             <span className="channel-item-title-extra">点击添加频道</span>
           </div>
           <div className="channel-list">
+            {/* 选中时，添加类名selected */}
             {recommentChannels.map((item) => (
               <span className="channel-list-item" key={item.id}>
                 {item.name}

@@ -1,2 +1,70 @@
 .root {
+  height: 100%;
+
+  :global {
+    .tabs {
+      height: 100%;
+      padding: 44px 0 50px 0;
+
+      .adm-tabs-header {
+        position: fixed;
+        top: 0;
+        z-index: 2;
+        height: 44px;
+        width: calc(100vw - 86px);
+        background-color: #fff;
+      }
+
+      .adm-tabs-tab {
+        line-height: 25px;
+        color: #9ea1ae;
+        font-size: 15px;
+      }
+      .adm-tabs-tab-active {
+        color: var(--adm-color-text);
+        font-size: 18px;
+      }
+
+      .adm-tabs-tab-line {
+        height: 3px;
+        border-radius: 2px;
+      }
+
+      .adm-tabs-content {
+        height: 100%;
+        padding: 0;
+      }
+    }
+
+    .tabs-opration {
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      width: 86px;
+      height: 44px;
+      padding: 0 14px;
+      background: #fff;
+      border-bottom: 1px solid #efefef;
+
+      .icon {
+        color: #9ea1ae;
+        font-size: 18px;
+
+        &:first-child {
+          margin-right: 21px;
+        }
+      }
+    }
+  }
+}
+
+:global {
+  .channel-popup {
+    .adm-popup-body {
+      overflow-y: scroll;
+    }
+  }
 }

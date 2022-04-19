@@ -36,3 +36,8 @@ export type UserProfile = {
   intro: string
 }
 
+// 首页频道数据
+export type Channel = {
+  id: number
+  name:string
+}

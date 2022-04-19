@@ -11,7 +11,7 @@ import { Token, UserProfile } from "./data";
 // store的state的类型
 export type RootState = ReturnType<typeof store.getState>;
 // 所有的Action的类型
-export type RootAction = LoginAction |ProfileAction
+export type RootAction = LoginAction |ProfileAction|ChannelAction;
 // 所有的ThunkAction的类型
 export type RootThunkAction = ThunkAction<void, RootState, unknown, RootAction>;
 // 各个默认的Action的类型
@@ -31,3 +31,9 @@ export type ProfileAction =
       type: 'profile/getUserProfile'
       payload: UserProfile
     }
+
+
+export type ChannelAction = {
+  type: 'channel/getUserChannel'
+  payload: Channel[]
+}

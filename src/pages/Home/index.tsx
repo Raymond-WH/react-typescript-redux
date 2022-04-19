@@ -4,6 +4,7 @@ import { useInitialState } from '@/utils/hooks'
 import { Popup, Tabs } from 'antd-mobile'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import ArticleList from './components/ArticleList'
 import Channels from './components/Channels'
 
 import styles from './index.module.scss'
@@ -28,7 +29,8 @@ const Home = () => {
         }}>
           {userChannels.map((item) => (
             <Tabs.Tab title={item.name} key={item.id}>
-              {item.name}
+              <ArticleList channelId={ item.id}></ArticleList>
+
             </Tabs.Tab>
           ))}
         </Tabs>

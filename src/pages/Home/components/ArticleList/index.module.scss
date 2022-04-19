@@ -1,0 +1,18 @@
+.root {
+  height: 100%;
+  padding: 0 16px;
+  // 注意：需要在此处设置超出滚动，这样才能保证每个 tab 之间的滚动位置不会相互影响
+  overflow-y: scroll;
+
+  :global {
+    .articles {
+      padding-bottom: 50px;
+    }
+    .article-item {
+      position: relative;
+      color: #323233;
+      font-size: 14px;
+      background-color: #fff;
+    }
+  }
+}

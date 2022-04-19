@@ -67,3 +67,26 @@ export const changeActive = (id:number):ChannelAction => {
     payload: id,
   }
 }
+
+export const addChannel = (channel: Channel): RootThunkAction => { 
+  return async (dispatch, getState) => { 
+    // console.log(getState());
+    const { userChannels } = getState().channel
+    const newChannels = [channel, ...userChannels]
+    // 判断是否登录，登陆了就添加到服务器，没有登陆就添加到本地
+    if (hasToken()) {
+      // 发送请求添加频道
+      await request.put('/user/channels', {
+        channels: newChannels
+      })
+    } else { 
+      // 存储到本地
+      setChannels(newChannels)
+    }
+    // 保存到redux
+    dispatch({
+      type: 'channel/getUserChannel',
+      payload: newChannels,
+    })
+  }
+}

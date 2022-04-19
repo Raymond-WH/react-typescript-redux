@@ -4,8 +4,9 @@ import Icon from '@/components/icon'
 import styles from './index.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/types/store'
-import { differenceBy } from 'lodash'
-import { changeActive } from '@/store/actions/channel'
+import { add, differenceBy } from 'lodash'
+import { addChannel, changeActive } from '@/store/actions/channel'
+import { Channel } from '@/types/data'
 type Props = {
   hide: () => void
 }
@@ -22,6 +23,11 @@ const Channels = ({ hide }: Props) => {
   // console.log(recommentChannels)
   // 根据id的不同来筛选数组
   const recommentChannels = differenceBy(allChannels, userChannels, 'id')
+
+  // 添加频道
+  const add = (channel:Channel) => { 
+    dispatch(addChannel(channel))
+  }
   return (
     <div className={styles.root}>
       <div className="channel-header">
@@ -63,8 +69,10 @@ const Channels = ({ hide }: Props) => {
           <div className="channel-list">
             {/* 选中时，添加类名selected */}
             {recommentChannels.map((item) => (
-              <span className="channel-list-item" key={item.id}>
-                {item.name}
+              <span className="channel-list-item" key={item.id} onClick={() => { 
+                add(item)
+              }}>
+                +{item.name}
               </span>
             ))}
           </div>

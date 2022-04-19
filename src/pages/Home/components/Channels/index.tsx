@@ -4,18 +4,22 @@ import Icon from '@/components/icon'
 import styles from './index.module.scss'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/types/store'
+import {differenceBy} from 'lodash'
 type Props = {
   hide: () => void
 }
 const Channels = ({ hide }: Props) => {
-  const { userChannels,allChannels } = useSelector((state: RootState) => state.channel)
+  const { userChannels, allChannels } = useSelector(
+    (state: RootState) => state.channel
+  )
   // 获取推荐的频道=所有频道-用户频道
-  const recommentChannels = allChannels.filter((item) => { 
-    // 如果item在用户频道中存在，就不需要，如果不存在，就保留
-    return userChannels.some((v)=>v.id === item.id) === false
-  })
+  // const recommentChannels = allChannels.filter((item) => {
+  //   // 如果item在用户频道中存在，就不需要，如果不存在，就保留
+  //   return userChannels.some((v)=>v.id === item.id) === false
+  // })
   // console.log(recommentChannels)
-  
+  // 根据id的不同来筛选数组
+  const recommentChannels = differenceBy(allChannels, userChannels, 'id')
   return (
     <div className={styles.root}>
       <div className="channel-header">
@@ -47,7 +51,9 @@ const Channels = ({ hide }: Props) => {
           </div>
           <div className="channel-list">
             {recommentChannels.map((item) => (
-              <span className="channel-list-item" key={item.id}>{ item.name}</span>
+              <span className="channel-list-item" key={item.id}>
+                {item.name}
+              </span>
             ))}
           </div>
         </div>

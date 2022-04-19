@@ -2,14 +2,17 @@ import classnames from 'classnames'
 
 import Icon from '@/components/icon'
 import styles from './index.module.scss'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/types/store'
 type Props = {
   hide: () => void
 }
-const Channels = ({ hide}:Props) => {
+const Channels = ({ hide }: Props) => {
+  const {userChannels} = useSelector((state:RootState)=>state.channel)
   return (
     <div className={styles.root}>
       <div className="channel-header">
-        <Icon type="iconbtn_channel_close" onClick={hide}/>
+        <Icon type="iconbtn_channel_close" onClick={hide} />
       </div>
       <div className="channel-content">
         {/* 编辑时，添加类名 edit */}
@@ -21,10 +24,12 @@ const Channels = ({ hide}:Props) => {
           </div>
           <div className="channel-list">
             {/* 选中时，添加类名 selected */}
-            <span className={classnames('channel-list-item')}>
-              推荐
-              <Icon type="iconbtn_tag_close" />
-            </span>
+            {userChannels.map((item) => (
+              <span className={classnames('channel-list-item')}>
+                {item.name}
+                <Icon type="iconbtn_tag_close" />
+              </span>
+            ))}
           </div>
         </div>
 

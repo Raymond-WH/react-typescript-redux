@@ -11,13 +11,15 @@ const Home = () => {
   return (
     <div className={styles.root}>
       {/* 频道 Tabs 列表 */}
-      <Tabs className="tabs" activeLineMode="fixed">
-        {userChannels.map((item) => (
-          <Tabs.Tab title={item.name} key={item.id}>
-            {item.name}
-          </Tabs.Tab>
-        ))}
-      </Tabs>
+      {userChannels.length > 0 && (
+        <Tabs className="tabs" activeLineMode="fixed">
+          {userChannels.map((item) => (
+            <Tabs.Tab title={item.name} key={item.id}>
+              {item.name}
+            </Tabs.Tab>
+          ))}
+        </Tabs>
+      )}
 
       <div className="tabs-opration">
         <Icon type="iconbtn_search" />

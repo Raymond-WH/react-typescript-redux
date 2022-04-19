@@ -36,4 +36,7 @@ export type ProfileAction =
 export type ChannelAction = {
   type: 'channel/getUserChannel'
   payload: Channel[]
+} | {
+  type: 'channel/getAllChannel'
+  payload: Channel[]
 }

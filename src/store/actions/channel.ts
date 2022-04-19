@@ -44,3 +44,19 @@ export const getUserChannel = (): RootThunkAction => {
     // console.log(res.data.data.channels);
   }
 }
+
+ /**
+  * 获取所有频道数据
+  * @returns
+  */
+export const getAllChannel = (): RootThunkAction => { 
+  return async (dispatch) => {
+    const res = await request.get<ApiResponse<{ channels: Channel[] }>>(
+      '/channels'
+    )
+    dispatch({
+      type: 'channel/getAllChannel',
+      payload: res.data.data.channels,
+    })
+  }
+}

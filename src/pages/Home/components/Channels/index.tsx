@@ -8,7 +8,14 @@ type Props = {
   hide: () => void
 }
 const Channels = ({ hide }: Props) => {
-  const {userChannels} = useSelector((state:RootState)=>state.channel)
+  const { userChannels,allChannels } = useSelector((state: RootState) => state.channel)
+  // 获取推荐的频道=所有频道-用户频道
+  const recommentChannels = allChannels.filter((item) => { 
+    // 如果item在用户频道中存在，就不需要，如果不存在，就保留
+    return userChannels.some((v)=>v.id === item.id) === false
+  })
+  // console.log(recommentChannels)
+  
   return (
     <div className={styles.root}>
       <div className="channel-header">
@@ -25,7 +32,7 @@ const Channels = ({ hide }: Props) => {
           <div className="channel-list">
             {/* 选中时，添加类名 selected */}
             {userChannels.map((item) => (
-              <span className={classnames('channel-list-item')}>
+              <span className={classnames('channel-list-item')} key={item.id}>
                 {item.name}
                 <Icon type="iconbtn_tag_close" />
               </span>
@@ -39,7 +46,9 @@ const Channels = ({ hide }: Props) => {
             <span className="channel-item-title-extra">点击添加频道</span>
           </div>
           <div className="channel-list">
-            <span className="channel-list-item">+ HTML</span>
+            {recommentChannels.map((item) => (
+              <span className="channel-list-item" key={item.id}>{ item.name}</span>
+            ))}
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import Icon from '@/components/icon'
-import { getUserChannel } from '@/store/actions/channel'
+import { getAllChannel, getUserChannel } from '@/store/actions/channel'
 import { useInitialState } from '@/utils/hooks'
 import { Popup, Tabs } from 'antd-mobile'
 import { useState } from 'react'
@@ -9,6 +9,7 @@ import styles from './index.module.scss'
 
 const Home = () => {
   const { userChannels } = useInitialState(getUserChannel, 'channel')
+  useInitialState(getAllChannel,'channel')
   const [visible, setVisible] = useState(false)
   const hide = () => { 
     setVisible(false)

@@ -3,11 +3,13 @@ import { ChannelAction } from "@/types/store"
 import produce from "immer"
 
 type ChannelStateType = {
-  userChannels:Channel[]
+  userChannels: Channel[]
+  allChannels: Channel[]
 }
 
 const ChannelState: ChannelStateType = {
-  userChannels:[]
+  userChannels: [],
+  allChannels: [],
 }
 
 const channel = produce((draft, action: ChannelAction) => {
@@ -16,6 +18,9 @@ const channel = produce((draft, action: ChannelAction) => {
     // console.log('bbbbbbb', action);
     
     draft.userChannels = action.payload
+  }
+  if (action.type === 'channel/getAllChannel') { 
+    draft.allChannels = action.payload
   }
  }, ChannelState)
 export default channel

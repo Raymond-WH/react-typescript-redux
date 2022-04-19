@@ -76,7 +76,7 @@ const Chat = () => {
 
       {/* 底部消息输入框 */}
       <div className="input-footer">
-        <Input className="no-border" placeholder="请描述您的问题" />
+        <Input className="no-border input" placeholder="请描述您的问题" />
         <Icon type="iconbianji" />
       </div>
     </div>

@@ -1,14 +1,16 @@
 import Icon from '@/components/icon'
-import { getAllChannel, getUserChannel } from '@/store/actions/channel'
+import { changeActive, getAllChannel, getUserChannel } from '@/store/actions/channel'
 import { useInitialState } from '@/utils/hooks'
 import { Popup, Tabs } from 'antd-mobile'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import Channels from './components/Channels'
 
 import styles from './index.module.scss'
 
 const Home = () => {
-  const { userChannels } = useInitialState(getUserChannel, 'channel')
+  const dispatch = useDispatch()
+  const { userChannels,active } = useInitialState(getUserChannel, 'channel')
   useInitialState(getAllChannel,'channel')
   const [visible, setVisible] = useState(false)
   const hide = () => { 
@@ -21,7 +23,9 @@ const Home = () => {
     <div className={styles.root}>
       {/* 频道 Tabs 列表 */}
       {userChannels.length > 0 && (
-        <Tabs className="tabs" activeLineMode="fixed">
+        <Tabs className="tabs" activeKey={active + ''} onChange={(key) => { 
+          dispatch(changeActive(+key))
+        }}>
           {userChannels.map((item) => (
             <Tabs.Tab title={item.name} key={item.id}>
               {item.name}

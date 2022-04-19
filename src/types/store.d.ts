@@ -39,4 +39,7 @@ export type ChannelAction = {
 } | {
   type: 'channel/getAllChannel'
   payload: Channel[]
+} | {
+  type: 'channel/changeActive'
+  payload: number
 }

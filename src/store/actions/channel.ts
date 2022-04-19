@@ -1,6 +1,6 @@
 
 import { ApiResponse, Channel } from "@/types/data";
-import { RootThunkAction } from "@/types/store";
+import { ChannelAction, RootThunkAction } from "@/types/store";
 import request from '@/utils/request'
 import { getChannels, hasToken, setChannels } from "@/utils/storage";
 export const getUserChannel = (): RootThunkAction => { 
@@ -58,5 +58,12 @@ export const getAllChannel = (): RootThunkAction => {
       type: 'channel/getAllChannel',
       payload: res.data.data.channels,
     })
+  }
+}
+
+export const changeActive = (id:number):ChannelAction => { 
+  return {
+    type: 'channel/changeActive',
+    payload: id,
   }
 }

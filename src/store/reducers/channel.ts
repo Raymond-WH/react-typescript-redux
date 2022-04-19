@@ -5,11 +5,13 @@ import produce from "immer"
 type ChannelStateType = {
   userChannels: Channel[]
   allChannels: Channel[]
+  active: number
 }
 
 const ChannelState: ChannelStateType = {
   userChannels: [],
   allChannels: [],
+  active: 0
 }
 
 const channel = produce((draft, action: ChannelAction) => {
@@ -21,6 +23,9 @@ const channel = produce((draft, action: ChannelAction) => {
   }
   if (action.type === 'channel/getAllChannel') { 
     draft.allChannels = action.payload
+  }
+  if (action.type === 'channel/changeActive') { 
+    draft.active = action.payload
   }
  }, ChannelState)
 export default channel

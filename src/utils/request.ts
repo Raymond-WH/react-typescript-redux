@@ -5,15 +5,15 @@ import { getToken, setToken } from './storage'
 import store from '@/store'
 import { logout } from '@/store/actions/login'
 import history from './history'
-const baseURL = 'http://geek.itheima.net/v1_0/'
+export const baseURL = 'http://geek.itheima.net'
 const instance = axios.create({
-  baseURL,
+  baseURL: baseURL + '/v1_0/',
   timeout: 5000,
 })
 
 // 添加专门用于刷新的token
 const instance2 = axios.create({
-  baseURL,
+  baseURL: baseURL + '/v1_0/',
   timeout: 5000,
 })
 // 添加请求拦截器

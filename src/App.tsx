@@ -5,6 +5,7 @@ import PrivateRoute from './components/PrivateRoute'
 import Layout from './pages/Layout'
 import Login from './pages/Login'
 import NotFound from './pages/NotFound'
+import Chat from './pages/Profile/Chat'
 import ProfileEdit from './pages/Profile/Edit'
 import history from './utils/history'
 function App() {
@@ -50,6 +51,10 @@ function App() {
               }
             }}
           ></Route> */}
+          {/* 聊天功能 */}
+          <PrivateRoute path='/chat'>
+            <Chat></Chat>
+          </PrivateRoute>
           {/* 404页面 */}
           <Route path="*">
             <NotFound></NotFound>

@@ -7,12 +7,16 @@ import styles from './index.module.scss'
 // 导入useState
 import { useState } from 'react'
 import { useDebounceFn} from 'ahooks'
+import { useDispatch } from 'react-redux'
+import { getSuggestion } from '@/store/actions/search'
 const SearchPage = () => {
   const history = useHistory()
   // 使用useState定义搜索框的值
   const [value, setValue] = useState('')
+  const dispatch = useDispatch()
   const { run} = useDebounceFn(() => { 
     console.log('需要搜索');
+    dispatch(getSuggestion(value))
     
   })
   const onChange = (e: string) => {

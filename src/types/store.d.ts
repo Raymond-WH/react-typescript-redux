@@ -4,23 +4,30 @@
 // RootThunAction
 // 各个模块的Action
 
-import store from "@/store";
-import { ThunkAction } from "redux-thunk";
-import { Token, UserProfile } from "./data";
+import store from '@/store'
+import { ThunkAction } from 'redux-thunk'
+import {  Token, UserProfile } from './data'
 
 // store的state的类型
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof store.getState>
 // 所有的Action的类型
-export type RootAction = LoginAction |ProfileAction|ChannelAction|HomeAction;
+export type RootAction =
+  | LoginAction
+  | ProfileAction
+  | ChannelAction
+  | HomeAction
+  | SearchAction
 // 所有的ThunkAction的类型
-export type RootThunkAction = ThunkAction<void, RootState, unknown, RootAction>;
+export type RootThunkAction = ThunkAction<void, RootState, unknown, RootAction>
 // 各个默认的Action的类型
-export type LoginAction = {
-  type: 'login/login',
-  payload: Token
-} | {
-  type: 'login/logout',
-}
+export type LoginAction =
+  | {
+      type: 'login/login'
+      payload: Token
+    }
+  | {
+      type: 'login/logout'
+    }
 
 export type ProfileAction =
   | {
@@ -32,17 +39,19 @@ export type ProfileAction =
       payload: UserProfile
     }
 
-
-export type ChannelAction = {
-  type: 'channel/getUserChannel'
-  payload: Channel[]
-} | {
-  type: 'channel/getAllChannel'
-  payload: Channel[]
-} | {
-  type: 'channel/changeActive'
-  payload: number
-}
+export type ChannelAction =
+  | {
+      type: 'channel/getUserChannel'
+      payload: Channel[]
+    }
+  | {
+      type: 'channel/getAllChannel'
+      payload: Channel[]
+    }
+  | {
+      type: 'channel/changeActive'
+      payload: number
+    }
 
 export type HomeAction =
   | {
@@ -61,3 +70,8 @@ export type HomeAction =
         results: Article[]
       }
     }
+
+export type SearchAction = {
+  type: 'search/suggestion'
+  payload: string[]
+}

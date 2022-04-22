@@ -7,13 +7,17 @@ import styles from './index.module.scss'
 // 导入useState
 import { useState } from 'react'
 import { useDebounceFn} from 'ahooks'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getSuggestion } from '@/store/actions/search'
+import { RootState } from '@/types/store'
 const SearchPage = () => {
   const history = useHistory()
   // 使用useState定义搜索框的值
   const [value, setValue] = useState('')
   const dispatch = useDispatch()
+  const { suggestion } = useSelector((state: RootState) => state.search)
+  console.log(suggestion);
+  
   const { run} = useDebounceFn(() => { 
     console.log('需要搜索');
     dispatch(getSuggestion(value))
@@ -67,13 +71,17 @@ const SearchPage = () => {
       )}
 
       <div className={classnames('search-result', true ? 'show' : '')}>
-        <div className="result-item">
+        {
+        // 推荐渲染
+          suggestion.map((item,index) => (
+            <div className="result-item" key={index}>
           <Icon className="icon-search" type="iconbtn_search" />
           <div className="result-value text-overflow">
-            <span>黑马</span>
+            <span>{item}</span>
             程序员
           </div>
         </div>
+           ) )}
       </div>
     </div>
   )

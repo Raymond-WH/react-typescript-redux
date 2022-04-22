@@ -5,6 +5,7 @@ import Icon from '@/components/icon'
 import styles from './index.module.scss'
 import { Article } from '@/types/data'
 import dayjs from 'dayjs'
+import Img from '@/components/Img'
 type Props = {
   /**
    * 0 表示无图
@@ -37,7 +38,7 @@ const ArticleItem = ({ article }: Props) => {
           <div className="article-imgs">
             {images.map((item, index) => (
               <div className="article-img-wrapper" key={index}>
-                <img src={item} alt="" />
+                <Img src={item} alt="" />
               </div>
             ))}
           </div>

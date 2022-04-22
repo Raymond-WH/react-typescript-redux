@@ -44,11 +44,20 @@ export type ChannelAction = {
   payload: number
 }
 
-export type HomeAction = {
-  type: 'home/getArticleList',
-  payload: {
-    timestamp: number,
-    channel_id: number,
-    results: Article[]
-  }
-}
+export type HomeAction =
+  | {
+      type: 'home/getArticleList'
+      payload: {
+        timestamp: number
+        channel_id: number
+        results: Article[]
+      }
+    }
+  | {
+      type: 'home/getNewArticleList'
+      payload: {
+        timestamp: number
+        channel_id: number
+        results: Article[]
+      }
+    }

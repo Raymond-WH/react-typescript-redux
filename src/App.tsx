@@ -8,6 +8,7 @@ import NotFound from './pages/NotFound'
 import Chat from './pages/Profile/Chat'
 import ProfileEdit from './pages/Profile/Edit'
 import history from './utils/history'
+import Search from './pages/Search'
 function App() {
   return (
     <Router history={ history}>
@@ -55,6 +56,9 @@ function App() {
           <PrivateRoute path='/chat'>
             <Chat></Chat>
           </PrivateRoute>
+          <Route path='/search'>
+            <Search></Search>
+          </Route>
           {/* 404页面 */}
           <Route path="*">
             <NotFound></NotFound>

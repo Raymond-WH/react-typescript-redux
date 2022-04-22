@@ -1,0 +1,13 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  :global {
+    .article-list {
+      flex: 1;
+      padding: 0 16px;
+      overflow-y: scroll;
+    }
+  }
+}

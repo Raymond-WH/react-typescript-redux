@@ -1,0 +1,123 @@
+@import '@scss/hairline.scss';
+
+.root {
+  :global {
+    .navbar {
+      --height: 52px;
+
+      @include hairline-remove(bottom);
+
+      .adm-nav-bar-title {
+        height: 36px;
+        padding-left: 0;
+      }
+      .adm-nav-bar-left,
+      .adm-nav-bar-right {
+        flex: unset;
+      }
+
+      .adm-nav-bar-right {
+        font-size: 16px;
+      }
+
+      .adm-search {
+        height: 100%;
+        --border-radius: 18px;
+      }
+
+      .adm-search-input-box {
+        height: 100%;
+        border: none;
+      }
+    }
+
+    .history {
+      padding: 0 16px;
+      .history-header {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 16px;
+        padding-bottom: 19px;
+        color: #a5a6ab;
+
+        .icon {
+          font-size: 16px;
+          margin-right: 6px;
+        }
+      }
+
+      .history-list {
+        color: #333333;
+
+        .history-item {
+          display: flex;
+          align-items: center;
+          position: relative;
+          padding: 12px 0;
+          font-size: 13px;
+          @include hairline(bottom, #f0f0f0);
+
+          span {
+            flex: 1;
+          }
+          .icon {
+            color: #999;
+          }
+
+          &:first-child {
+            padding-top: 0;
+          }
+        }
+
+        .divider {
+          display: inline-block;
+          height: 16px;
+          width: 1px;
+          margin: 0 16px;
+          vertical-align: middle;
+          background-color: #bfc2cb;
+        }
+      }
+    }
+
+    .search-result {
+      padding: 0 20px;
+      display: none;
+
+      .result-item {
+        position: relative;
+        display: flex;
+        align-items: center;
+        height: 44px;
+        padding: 10px 0;
+        font-size: 14px;
+        @include hairline(bottom, #f0f0f0);
+
+        .icon {
+          margin-right: 4px;
+          font-size: 12px;
+        }
+
+        .result-value {
+          flex: 1;
+
+          span {
+            color: red;
+          }
+        }
+      }
+    }
+    .search-result.show {
+      display: block;
+    }
+
+    .text-overflow {
+      word-break: break-all;
+      display: -webkit-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+    }
+  }
+}

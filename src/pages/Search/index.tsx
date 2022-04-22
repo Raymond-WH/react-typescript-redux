@@ -84,17 +84,21 @@ const [isSearch,setIsSearch] = useState(false)
       <div className={classnames('search-result', isSearch ? 'show' : '')}>
         {
           // 推荐渲染
-          suggestion.map((item, index) => (
-            <div className="result-item" key={index}>
-              <Icon className="icon-search" type="iconbtn_search" />
-              <div
-                className="result-value text-overflow"
-                dangerouslySetInnerHTML={{ __html: highlight(item, value) }}
-              >
-                {/* 程序员 */}
+          suggestion.map((item, index) => {
+            if (item) {
+              return <div className="result-item" key={index}>
+                <Icon className="icon-search" type="iconbtn_search" />
+                <div
+                  className="result-value text-overflow"
+                  dangerouslySetInnerHTML={{ __html: highlight(item, value) }}
+                ></div>
               </div>
-            </div>
-          ))
+            } else { 
+              return <div>没有文章</div>
+            }
+          }
+            
+          )
         }
       </div>
     </div>

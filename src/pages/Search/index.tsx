@@ -10,6 +10,7 @@ import { useDebounceFn} from 'ahooks'
 import { useDispatch, useSelector } from 'react-redux'
 import { getSuggestion } from '@/store/actions/search'
 import { RootState } from '@/types/store'
+import { highlight } from '@/utils'
 const SearchPage = () => {
   const history = useHistory()
   // 使用useState定义搜索框的值
@@ -20,8 +21,10 @@ const SearchPage = () => {
   
   const { run} = useDebounceFn(() => { 
     console.log('需要搜索');
+    // 如果为空不发送请求
+    if(!value) return
     dispatch(getSuggestion(value))
-    
+     
   })
   const onChange = (e: string) => {
     setValue(e)
@@ -72,16 +75,19 @@ const SearchPage = () => {
 
       <div className={classnames('search-result', true ? 'show' : '')}>
         {
-        // 推荐渲染
-          suggestion.map((item,index) => (
+          // 推荐渲染
+          suggestion.map((item, index) => (
             <div className="result-item" key={index}>
-          <Icon className="icon-search" type="iconbtn_search" />
-          <div className="result-value text-overflow">
-            <span>{item}</span>
-            程序员
-          </div>
-        </div>
-           ) )}
+              <Icon className="icon-search" type="iconbtn_search" />
+              <div
+                className="result-value text-overflow"
+                dangerouslySetInnerHTML={{ __html: highlight(item, value) }}
+              >
+                {/* 程序员 */}
+              </div>
+            </div>
+          ))
+        }
       </div>
     </div>
   )

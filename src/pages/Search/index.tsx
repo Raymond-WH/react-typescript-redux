@@ -4,9 +4,17 @@ import { NavBar, SearchBar } from 'antd-mobile'
 
 import Icon from '@/components/icon'
 import styles from './index.module.scss'
+// 导入useState
+import { useState } from 'react'
 
 const SearchPage = () => {
   const history = useHistory()
+  // 使用useState定义搜索框的值
+  const [value, setValue] = useState('')
+  const onChange = (e: string) => {
+    setValue(e)
+    console.log('发送请求')
+  }
 
   return (
     <div className={styles.root}>
@@ -15,14 +23,20 @@ const SearchPage = () => {
         onBack={() => history.go(-1)}
         right={<span className="search-text">搜索</span>}
       >
-        <SearchBar placeholder="请输入关键字搜索" />
+        {/* 受控组件的方式获取value值 */}
+
+        <SearchBar
+          placeholder="请输入关键字搜索"
+          value={value}
+          onChange={onChange}
+        />
       </NavBar>
 
       {true && (
         <div
           className="history"
           style={{
-            display: true ? 'none' : 'block'
+            display: true ? 'none' : 'block',
           }}
         >
           <div className="history-header">

@@ -4,8 +4,8 @@ import { InfiniteScroll, PullToRefresh } from 'antd-mobile'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ArticleItem from '../ArticleItem'
-
 import styles from './index.module.scss'
+
 type Props = {
   channelId: number
 }

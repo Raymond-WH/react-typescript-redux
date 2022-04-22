@@ -4,7 +4,7 @@ import Icon from '@/components/icon'
 
 import styles from './index.module.scss'
 import { Article } from '@/types/data'
-
+import dayjs from 'dayjs'
 type Props = {
   /**
    * 0 表示无图
@@ -35,7 +35,7 @@ const ArticleItem = ({ article }: Props) => {
         <h3>{title}</h3>
         {type !== 0 && (
           <div className="article-imgs">
-            {images.map((item,index) => (
+            {images.map((item, index) => (
               <div className="article-img-wrapper" key={index}>
                 <img src={item} alt="" />
               </div>
@@ -46,7 +46,7 @@ const ArticleItem = ({ article }: Props) => {
       <div className={classnames('article-info', type === 0 && 'none-mt')}>
         <span>{aut_name}</span>
         <span>{comm_count} 评论</span>
-        <span>{ pubdate} 天前</span>
+        <span>{dayjs(pubdate).fromNow()}</span>
         <span className="close">
           <Icon type="iconbtn_essay_close" />
         </span>

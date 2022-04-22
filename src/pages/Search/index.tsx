@@ -25,14 +25,23 @@ const SearchPage = () => {
     if(!value) return
     dispatch(getSuggestion(value))
      
-  })
+  }, {
+    // 加快防抖时间
+    wait: 500
+  }
+  )
   const onChange = (e: string) => {
     setValue(e)
+    if (e) {
+      setIsSearch(true)
+    } else { 
+      setIsSearch(false)
+    }
     console.log('发送请求')
     // 搜索功能需要防抖
     run()
   }
-
+const [isSearch,setIsSearch] = useState(false)
   return (
     <div className={styles.root}>
       <NavBar
@@ -49,11 +58,11 @@ const SearchPage = () => {
         />
       </NavBar>
 
-      {true && (
+      
         <div
           className="history"
           style={{
-            display: true ? 'none' : 'block',
+            display: isSearch ? 'none' : 'block',
           }}
         >
           <div className="history-header">
@@ -71,9 +80,8 @@ const SearchPage = () => {
             </span>
           </div>
         </div>
-      )}
 
-      <div className={classnames('search-result', true ? 'show' : '')}>
+      <div className={classnames('search-result', isSearch ? 'show' : '')}>
         {
           // 推荐渲染
           suggestion.map((item, index) => (

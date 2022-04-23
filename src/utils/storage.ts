@@ -4,6 +4,8 @@ import { Channel, Token } from "@/types/data";
 const TOKEN_KEY = 'redux_mobile_token'
 
 const CHANNEL_KEY = 'redux_mobile_channel'
+// 存储历史记录的KEY
+const HISTORY_KEY = 'redux_mobile_history'
 /**
  * 保存频道数据
  * @param channels 
@@ -51,4 +53,18 @@ export function removeToken(): void {
  */
 export function hasToken(): boolean { 
   return !!getToken().token
+}
+
+// 存储历史记录
+export function setHistoryStorage(history: string[]): void {
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(history))
+}
+// 获取历史记录
+export function getHistoryStorage(): string[] {
+  // const history = localStorage.getItem(HISTORY_KEY)
+  // if (history) {
+  //   return JSON.parse(history)
+  // }
+  // return []
+  return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]')
 }

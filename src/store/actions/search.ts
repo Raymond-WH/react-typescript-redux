@@ -1,6 +1,7 @@
 import { ApiResponse } from '@/types/data'
 import { RootThunkAction } from '@/types/store'
 import request from '@/utils/request'
+import { setHistoryStorage } from '@/utils/storage'
 
 export const getSuggestion = (keyword: string): RootThunkAction => {
   return async (dispatch) => {
@@ -21,6 +22,8 @@ export const getSuggestion = (keyword: string): RootThunkAction => {
 }
 
 export const setHistory = (history: string[]) => { 
+  // 保存到历史记录
+  setHistoryStorage(history)
   return {
     type: 'search/history',
     payload: history,

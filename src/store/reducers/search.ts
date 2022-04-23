@@ -1,3 +1,4 @@
+import { getHistoryStorage } from "@/utils/storage"
 import produce from "immer"
 
 type SearchStateType = {
@@ -6,7 +7,7 @@ type SearchStateType = {
 }
 const SearchState: SearchStateType = {
   suggestion: [],
-  history: ['a','b','c'],
+  history: getHistoryStorage(),
 }
 const search = produce((draft: SearchStateType = SearchState, action: any) => { 
   switch (action.type) {

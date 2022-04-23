@@ -41,13 +41,30 @@ const SearchPage = () => {
     // 搜索功能需要防抖
     run()
   }
-const [isSearch,setIsSearch] = useState(false)
+  const [isSearch, setIsSearch] = useState(false)
+  const addHistory = (value: string) => { 
+    // 添加历史记录不能重复
+    const newHistoryList = historyList.filter((item) => item !== value)
+    newHistoryList.unshift(value)
+    // 添加历史记录不能超过十条
+    if (newHistoryList.length > 10) {
+      newHistoryList.pop()
+    }
+    // 保存历史记录到redux
+    dispatch({
+      type: 'search/history',
+      payload: newHistoryList
+    })
+
+  }
   return (
     <div className={styles.root}>
       <NavBar
         className="navbar"
         onBack={() => history.go(-1)}
-        right={<span className="search-text">搜索</span>}
+        right={<span className="search-text" onClick={() => { 
+          addHistory(value)
+        }}>搜索</span>}
       >
         {/* 受控组件的方式获取value值 */}
 
@@ -75,7 +92,9 @@ const [isSearch,setIsSearch] = useState(false)
 
           <div className="history-list">
           {historyList.map((item,index) => ( 
-            <span className="history-item" key={index}>
+            <span className="history-item" key={index} onClick={() => { 
+              addHistory(item)
+            }}>
               <span className="text-overflow">{item}</span>
               <Icon type="iconbtn_essay_close" />
             </span>
@@ -88,7 +107,7 @@ const [isSearch,setIsSearch] = useState(false)
           // 推荐渲染
           suggestion.map((item, index) => {
             if (item) {
-              return <div className="result-item" key={index}>
+              return <div className="result-item" key={index} onClick={ ()=>addHistory(item)}>
                 <Icon className="icon-search" type="iconbtn_search" />
                 <div
                   className="result-value text-overflow"

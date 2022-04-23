@@ -6,7 +6,7 @@
 
 import store from '@/store'
 import { ThunkAction } from 'redux-thunk'
-import {  Token, UserProfile } from './data'
+import { Token, UserProfile } from './data'
 
 // store的state的类型
 export type RootState = ReturnType<typeof store.getState>
@@ -71,10 +71,21 @@ export type HomeAction =
       }
     }
 
-export type SearchAction = {
-  type: 'search/suggestion'
-  payload: string[]
-} | {
-  type: 'search/history'
-  payload: string[]
-}
+export type SearchAction =
+  | {
+      type: 'search/suggestion'
+      payload: string[]
+    }
+  | {
+      type: 'search/history'
+      payload: string[]
+    }
+  | {
+      type: 'search/result'
+      payload: Article[]
+      // payload: {
+      // results: Article[]
+      // page: number
+      // per_page: number
+      // }
+    }

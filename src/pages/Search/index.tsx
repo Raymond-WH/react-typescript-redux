@@ -58,7 +58,10 @@ const SearchPage = () => {
     //   type: 'search/history',
     //   payload: newHistoryList
     // })
+    // 历史记录保存到redux中
     dispatch(setHistory(newHistoryList))
+    // 跳转到搜索结果页面
+    history.push(`/search/result?keyword=${value}`)
   }
   // 清空历史记录
   const clear = () => {

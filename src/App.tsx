@@ -9,6 +9,7 @@ import Chat from './pages/Profile/Chat'
 import ProfileEdit from './pages/Profile/Edit'
 import history from './utils/history'
 import Search from './pages/Search'
+import SearchResult from './pages/Search/Result'
 function App() {
   return (
     <Router history={ history}>
@@ -56,8 +57,11 @@ function App() {
           <PrivateRoute path='/chat'>
             <Chat></Chat>
           </PrivateRoute>
-          <Route path='/search'>
+          <Route path='/search' exact>
             <Search></Search>
+          </Route>
+          <Route path='/search/result'>
+            <SearchResult></SearchResult>
           </Route>
           {/* 404页面 */}
           <Route path="*">

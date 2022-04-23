@@ -74,4 +74,7 @@ export type HomeAction =
 export type SearchAction = {
   type: 'search/suggestion'
   payload: string[]
+} | {
+  type: 'search/history'
+  payload: string[]
 }

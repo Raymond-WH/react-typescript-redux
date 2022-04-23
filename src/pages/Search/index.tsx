@@ -16,7 +16,7 @@ const SearchPage = () => {
   // 使用useState定义搜索框的值
   const [value, setValue] = useState('')
   const dispatch = useDispatch()
-  const { suggestion } = useSelector((state: RootState) => state.search)
+  const { suggestion,history :historyList } = useSelector((state: RootState) => state.search)
   console.log(suggestion);
   
   const { run} = useDebounceFn(() => { 
@@ -74,10 +74,12 @@ const [isSearch,setIsSearch] = useState(false)
           </div>
 
           <div className="history-list">
-            <span className="history-item">
-              <span className="text-overflow">黑马程序员</span>
+          {historyList.map((item,index) => ( 
+            <span className="history-item" key={index}>
+              <span className="text-overflow">{item}</span>
               <Icon type="iconbtn_essay_close" />
             </span>
+          ))}
           </div>
         </div>
 

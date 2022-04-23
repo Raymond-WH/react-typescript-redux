@@ -19,3 +19,10 @@ export const getSuggestion = (keyword: string): RootThunkAction => {
     })
   }
 }
+
+export const setHistory = (history: string[]) => { 
+  return {
+    type: 'search/history',
+    payload: history,
+  }
+}

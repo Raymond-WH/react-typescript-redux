@@ -1,15 +1,32 @@
 import { NavBar, InfiniteScroll } from 'antd-mobile'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import classNames from 'classnames'
 import styles from './index.module.scss'
 
 import Icon from '@/components/icon'
 import CommentItem from './components/CommentItem'
 import CommentFooter from './components/CommentFooter'
+import { useEffect, useState } from 'react'
+import { getArticleInfo } from '@/store/actions/article'
+import { ArticleDetail } from '@/types/data'
 
 const Article = () => {
   const history = useHistory()
 
+  // 发送请求，获取文章详情
+  const [article,SetArticle] = useState<ArticleDetail>({}as ArticleDetail)
+  // const articleId = history.location.pathname.split('/')[2]
+  // 获取地址里的id值
+
+  const { id } = useParams<{ id: string }>()
+  useEffect(() => { 
+    // 获取文章详情
+    getArticleInfo(id).then(res => { 
+      console.log(res);
+      
+      SetArticle(res.data.data)
+    })
+  },[id])
   const renderArticle = () => {
     // 文章详情
     return (

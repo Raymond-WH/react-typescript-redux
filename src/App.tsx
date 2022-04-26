@@ -65,12 +65,11 @@ function App() {
             <SearchResult></SearchResult>
           </Route>
           {/* 404页面 */}
-          <Route path="*">
-            <NotFound></NotFound>
-          </Route>
-
           <Route path="/article/:id">
             <Article></Article>
+          </Route>
+          <Route path="*">
+            <NotFound></NotFound>
           </Route>
         </Switch>
       </div>

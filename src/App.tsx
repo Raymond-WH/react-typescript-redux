@@ -10,10 +10,11 @@ import ProfileEdit from './pages/Profile/Edit'
 import history from './utils/history'
 import Search from './pages/Search'
 import SearchResult from './pages/Search/Result'
+import Article from './pages/Article'
 function App() {
   return (
-    <Router history={ history}>
-      <div className="app"> 
+    <Router history={history}>
+      <div className="app">
         {/* <h1>App跟组件</h1>
         <ul>
           <li>
@@ -54,18 +55,22 @@ function App() {
             }}
           ></Route> */}
           {/* 聊天功能 */}
-          <PrivateRoute path='/chat'>
+          <PrivateRoute path="/chat">
             <Chat></Chat>
           </PrivateRoute>
-          <Route path='/search' exact>
+          <Route path="/search" exact>
             <Search></Search>
           </Route>
-          <Route path='/search/result'>
+          <Route path="/search/result">
             <SearchResult></SearchResult>
           </Route>
           {/* 404页面 */}
           <Route path="*">
             <NotFound></NotFound>
+          </Route>
+
+          <Route path="/article/:id">
+            <Article></Article>
           </Route>
         </Switch>
       </div>

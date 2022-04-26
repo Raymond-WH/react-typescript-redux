@@ -6,6 +6,7 @@ import styles from './index.module.scss'
 import { Article } from '@/types/data'
 import dayjs from 'dayjs'
 import Img from '@/components/Img'
+import { useHistory } from 'react-router-dom'
 type Props = {
   /**
    * 0 表示无图
@@ -24,8 +25,13 @@ const ArticleItem = ({ article }: Props) => {
     comm_count
     
   } = article
+
+
+  const history = useHistory()
   return (
-    <div className={styles.root}>
+    <div className={styles.root} onClick={() => { 
+      history.push(`/article/${article.art_id}`)
+    }}>
       <div
         className={classnames(
           'article-content',

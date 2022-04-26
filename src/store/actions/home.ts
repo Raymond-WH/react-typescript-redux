@@ -17,7 +17,7 @@ export const getArticleList = (
         timestamp,
       },
     })
-    console.log(res)
+    // console.log(res)
     dispatch({
       type: 'home/getArticleList',
       payload: {

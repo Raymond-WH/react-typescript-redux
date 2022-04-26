@@ -21,7 +21,7 @@ const home = produce((draft, action: HomeAction) => {
       {
         // 需要在原来的基础上追加results数据
         const old = draft.articles[action.payload.channel_id]?.results || []
-        console.log('old', old)
+        // console.log('old', old)
 
         draft.articles[action.payload.channel_id] = {
           timestamp: action.payload.timestamp,

@@ -19,7 +19,7 @@ const SearchPage = () => {
   const { suggestion, history: historyList } = useSelector(
     (state: RootState) => state.search
   )
-  console.log(suggestion)
+  // console.log(suggestion)
 
   const { run } = useDebounceFn(
     () => {

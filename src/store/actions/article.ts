@@ -15,3 +15,14 @@ export const getArticleComments = (article_id: string,offset?:string) => {
     }
   })
 }
+
+// 关注用户
+export const followUser = (user_id: string) => {
+  return request.post(`/user/followings`, {
+    target: user_id,
+  })
+}
+// 取消关注用户
+export const unFollowUser = (user_id: string) => {
+  return request.delete(`/user/followings/${user_id}`)
+}

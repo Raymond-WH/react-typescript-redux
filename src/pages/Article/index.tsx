@@ -7,7 +7,12 @@ import Icon from '@/components/icon'
 import CommentItem from './components/CommentItem'
 import CommentFooter from './components/CommentFooter'
 import { useEffect, useRef, useState } from 'react'
-import { getArticleComments, getArticleInfo } from '@/store/actions/article'
+import {
+  followUser,
+  getArticleComments,
+  getArticleInfo,
+  unFollowUser,
+} from '@/store/actions/article'
 import { ArticleDetail, Comment, CommentRes } from '@/types/data'
 import DOMPurify from 'dompurify'
 import histhlight from 'highlight.js'
@@ -77,7 +82,7 @@ const Article = () => {
     last_id: '',
     end_id: '',
   } as CommentRes)
-  
+
   const loadMore = async () => {
     const res = await getArticleComments(id, commentRes.last_id)
     setCommentRes({
@@ -86,7 +91,26 @@ const Article = () => {
     })
     console.log(res)
   }
-const hasMore = commentRes.total_count > commentRes.results.length
+  const hasMore = commentRes.total_count > commentRes.results.length
+  // 切换关注用户
+  // const [follow,setFollow] = useState(false)
+  const toggleFollow = async() => {
+    // 判断用户是否关注
+    if (article.is_followed) {
+      // 取消关注
+      // 发送请求
+      await unFollowUser(article.aut_id)
+    } else {
+      // 关注
+      // 发送请求
+      await followUser(article.aut_id)
+    }
+    // 更新文章
+    SetArticle({
+      ...article,
+      is_followed: !article.is_followed,
+    })
+  }
   const renderArticle = () => {
     // 文章详情
     return (
@@ -109,6 +133,7 @@ const hasMore = commentRes.total_count > commentRes.results.length
                   'follow',
                   article.is_followed ? 'followed' : ''
                 )}
+                onClick={toggleFollow}
               >
                 {article.is_followed ? '已关注' : '关注'}
               </span>
@@ -136,7 +161,7 @@ const hasMore = commentRes.total_count > commentRes.results.length
 
           <div className="comment-list">
             {commentRes.results.map((item) => (
-              <CommentItem type='normal' key={item.com_id} comment={ item} />
+              <CommentItem type="normal" key={item.com_id} comment={item} />
             ))}
 
             <InfiniteScroll hasMore={hasMore} loadMore={loadMore} />
@@ -166,6 +191,7 @@ const hasMore = commentRes.total_count > commentRes.results.length
                   'follow',
                   article.is_followed ? 'followed' : ''
                 )}
+                onClick={toggleFollow}
               >
                 {article.is_followed ? '已关注' : '关注'}
               </span>

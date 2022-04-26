@@ -7,13 +7,14 @@ import Icon from '@/components/icon'
 import CommentItem from './components/CommentItem'
 import CommentFooter from './components/CommentFooter'
 import { useEffect, useRef, useState } from 'react'
-import { getArticleInfo } from '@/store/actions/article'
-import { ArticleDetail } from '@/types/data'
+import { getArticleComments, getArticleInfo } from '@/store/actions/article'
+import { ArticleDetail, Comment, CommentRes } from '@/types/data'
 import DOMPurify from 'dompurify'
 import histhlight from 'highlight.js'
 // 要引入样式
 import 'highlight.js/styles/monokai-sublime.css'
 import { highlight } from '@/utils'
+import { useDispatch } from 'react-redux'
 const Article = () => {
   const history = useHistory()
 
@@ -26,26 +27,26 @@ const Article = () => {
   useEffect(() => {
     // 获取文章详情
     getArticleInfo(id).then((res) => {
-      console.log(res)
+      // console.log(res)
 
       SetArticle(res.data.data)
     })
   }, [id])
 
   // 代码高亮
-  useEffect(() => { 
+  useEffect(() => {
     // 忽略警告
-    // highlight.configure({
-    //   ignoreUnescapedHTML:true
-    // })
+    histhlight.configure({
+      ignoreUnescapedHTML: true,
+    })
     histhlight.highlightAll()
   }, [article])
   // 控制滚动事件
   const authorRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
   // 一进来需要注册滚动事件
-  const [showAuthor,setShowAuthor] = useState(false)
-  useEffect(() => { 
+  const [showAuthor, setShowAuthor] = useState(false)
+  useEffect(() => {
     const wrapperDOM = wrapperRef.current!
     const authorDOM = authorRef.current!
     const handleScroll = () => {
@@ -58,18 +59,34 @@ const Article = () => {
       const rect = authorDOM.getBoundingClientRect()
       if (rect.top < 0) {
         setShowAuthor(true)
-      } else { 
+      } else {
         setShowAuthor(false)
       }
-    
     }
     wrapperDOM.addEventListener('scroll', handleScroll)
-    
+
     return () => {
       wrapperDOM.removeEventListener('scroll', handleScroll)
-      
     }
-  },[])
+  }, [])
+
+  // const dispatch = useDispatch()
+  const [commentRes, setCommentRes] = useState<CommentRes>({
+    results: [],
+    total_count: 100,
+    last_id: '',
+    end_id: '',
+  } as CommentRes)
+  
+  const loadMore = async () => {
+    const res = await getArticleComments(id, commentRes.last_id)
+    setCommentRes({
+      ...res.data.data,
+      results: [...commentRes.results, ...res.data.data.results],
+    })
+    console.log(res)
+  }
+const hasMore = commentRes.total_count > commentRes.results.length
   const renderArticle = () => {
     // 文章详情
     return (
@@ -99,7 +116,12 @@ const Article = () => {
           </div>
 
           <div className="content">
-            <div className="content-html dg-html" dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(article.content)}} />
+            <div
+              className="content-html dg-html"
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(article.content),
+              }}
+            />
             {/* <div className="content-html dg-html" >{ article.content}</div> */}
 
             <div className="date">发布文章时间：{article.pubdate}</div>
@@ -108,19 +130,16 @@ const Article = () => {
 
         <div className="comment">
           <div className="comment-header">
-            <span>全部评论（10）</span>
-            <span>20 点赞</span>
+            <span>全部评论（{commentRes.results.length}）</span>
+            <span>{article.like_count} 点赞</span>
           </div>
 
           <div className="comment-list">
-            <CommentItem />
+            {commentRes.results.map((item) => (
+              <CommentItem type='normal' key={item.com_id} comment={ item} />
+            ))}
 
-            <InfiniteScroll
-              hasMore={false}
-              loadMore={async () => {
-                console.log(1)
-              }}
-            />
+            <InfiniteScroll hasMore={hasMore} loadMore={loadMore} />
           </div>
         </div>
       </div>
@@ -140,9 +159,14 @@ const Article = () => {
         >
           {showAuthor && (
             <div className="nav-author">
-              <img src={ article.aut_photo} alt="" />
+              <img src={article.aut_photo} alt="" />
               <span className="name">{article.aut_name}</span>
-              <span className={classNames('follow', article.is_followed ? 'followed' : '')}>
+              <span
+                className={classNames(
+                  'follow',
+                  article.is_followed ? 'followed' : ''
+                )}
+              >
                 {article.is_followed ? '已关注' : '关注'}
               </span>
             </div>

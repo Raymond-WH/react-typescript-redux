@@ -9,50 +9,57 @@ import CommentFooter from './components/CommentFooter'
 import { useEffect, useState } from 'react'
 import { getArticleInfo } from '@/store/actions/article'
 import { ArticleDetail } from '@/types/data'
-
+import DOMPurify from 'dompurify'
 const Article = () => {
   const history = useHistory()
 
   // 发送请求，获取文章详情
-  const [article,SetArticle] = useState<ArticleDetail>({}as ArticleDetail)
+  const [article, SetArticle] = useState<ArticleDetail>({} as ArticleDetail)
   // const articleId = history.location.pathname.split('/')[2]
   // 获取地址里的id值
 
   const { id } = useParams<{ id: string }>()
-  useEffect(() => { 
+  useEffect(() => {
     // 获取文章详情
-    getArticleInfo(id).then(res => { 
-      console.log(res);
-      
+    getArticleInfo(id).then((res) => {
+      console.log(res)
+
       SetArticle(res.data.data)
     })
-  },[id])
+  }, [id])
   const renderArticle = () => {
     // 文章详情
     return (
       <div className="wrapper">
         <div className="article-wrapper">
           <div className="header">
-            <h1 className="title">{ article.title}</h1>
+            <h1 className="title">{article.title}</h1>
 
             <div className="info">
-              <span>{ article.pubdate}</span>
-              <span>{ article.read_count} 阅读</span>
+              <span>{article.pubdate}</span>
+              <span>{article.read_count} 阅读</span>
               <span>{article.comm_count} 评论</span>
             </div>
 
             <div className="author">
-              <img src={article.aut_photo}alt="" />
+              <img src={article.aut_photo} alt="" />
               <span className="name">{article.aut_name}</span>
-              <span className={classNames('follow', article.is_followed ? 'followed' : '')}>
+              <span
+                className={classNames(
+                  'follow',
+                  article.is_followed ? 'followed' : ''
+                )}
+              >
                 {article.is_followed ? '已关注' : '关注'}
               </span>
             </div>
           </div>
 
           <div className="content">
-            <div className="content-html dg-html" dangerouslySetInnerHTML={{__html:article.content}} />
-            <div className="date">发布文章时间：{ article.pubdate}</div>
+            <div className="content-html dg-html" dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(article.content)}} />
+            {/* <div className="content-html dg-html" >{ article.content}</div> */}
+
+            <div className="date">发布文章时间：{article.pubdate}</div>
           </div>
         </div>
 

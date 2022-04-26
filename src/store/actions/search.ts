@@ -33,18 +33,32 @@ export const setHistory = (history: string[]) => {
 }
 
 // 发送请求，获取搜索结果
-export const getSearchResult = (keyword: string): RootThunkAction => {
+export const getSearchResult = (keyword: string,page=1,per_page=10): RootThunkAction => {
   return async (dispatch) => {
     const res = await request.get<
-      ApiResponse<{ results: Article[]; page: number; per_page: number }>
+      ApiResponse<{ results: Article[];total_count:number }>
     >('/search', {
       params: {
         q: keyword,
+        page,
+        per_page,
       },
     })
     dispatch({
       type: 'search/result',
-      payload: res.data.data.results
+      payload: {
+        results: res.data.data.results,
+        total_count: res.data.data.total_count,
+      }
     })
+  }
+}
+export const clearSearchResult = () => { 
+  return {
+    type: 'search/clear',
+    payload: {
+      results: [],
+      total_count: 100,
+    }
   }
 }

@@ -73,19 +73,21 @@ export type HomeAction =
 
 export type SearchAction =
   | {
-      type: 'search/suggestion'
-      payload: string[]
-    }
+    type: 'search/suggestion'
+    payload: string[]
+  }
   | {
-      type: 'search/history'
-      payload: string[]
-    }
+    type: 'search/history'
+    payload: string[]
+  }
   | {
-      type: 'search/result'
-      payload: Article[]
-      // payload: {
-      // results: Article[]
+    type: 'search/result'
+    // payload: Article[]
+    payload: {
+      results: Article[]
       // page: number
       // per_page: number
-      // }
     }
+  } | {
+    type: 'search/clear'
+  }

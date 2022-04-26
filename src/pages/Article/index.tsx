@@ -6,13 +6,14 @@ import styles from './index.module.scss'
 import Icon from '@/components/icon'
 import CommentItem from './components/CommentItem'
 import CommentFooter from './components/CommentFooter'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { getArticleInfo } from '@/store/actions/article'
 import { ArticleDetail } from '@/types/data'
 import DOMPurify from 'dompurify'
 import histhlight from 'highlight.js'
 // 要引入样式
 import 'highlight.js/styles/monokai-sublime.css'
+import { highlight } from '@/utils'
 const Article = () => {
   const history = useHistory()
 
@@ -33,12 +34,46 @@ const Article = () => {
 
   // 代码高亮
   useEffect(() => { 
+    // 忽略警告
+    // highlight.configure({
+    //   ignoreUnescapedHTML:true
+    // })
     histhlight.highlightAll()
-  },[article])
+  }, [article])
+  // 控制滚动事件
+  const authorRef = useRef<HTMLDivElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  // 一进来需要注册滚动事件
+  const [showAuthor,setShowAuthor] = useState(false)
+  useEffect(() => { 
+    const wrapperDOM = wrapperRef.current!
+    const authorDOM = authorRef.current!
+    const handleScroll = () => {
+      // const { scrollTop } = wrapperDOM
+      // const { offsetHeight, scrollHeight } = authorDOM
+      // if (scrollTop + offsetHeight >= scrollHeight) {
+      //   // 滚动到底部了
+      //   console.log('滚动到底部了')
+      // }
+      const rect = authorDOM.getBoundingClientRect()
+      if (rect.top < 0) {
+        setShowAuthor(true)
+      } else { 
+        setShowAuthor(false)
+      }
+    
+    }
+    wrapperDOM.addEventListener('scroll', handleScroll)
+    
+    return () => {
+      wrapperDOM.removeEventListener('scroll', handleScroll)
+      
+    }
+  },[])
   const renderArticle = () => {
     // 文章详情
     return (
-      <div className="wrapper">
+      <div className="wrapper" ref={wrapperRef}>
         <div className="article-wrapper">
           <div className="header">
             <h1 className="title">{article.title}</h1>
@@ -49,7 +84,7 @@ const Article = () => {
               <span>{article.comm_count} 评论</span>
             </div>
 
-            <div className="author">
+            <div className="author" ref={authorRef}>
               <img src={article.aut_photo} alt="" />
               <span className="name">{article.aut_name}</span>
               <span
@@ -103,12 +138,12 @@ const Article = () => {
             </span>
           }
         >
-          {true && (
+          {showAuthor && (
             <div className="nav-author">
-              <img src="http://geek.itheima.net/images/user_head.jpg" alt="" />
-              <span className="name">黑马先锋</span>
-              <span className={classNames('follow', true ? 'followed' : '')}>
-                {true ? '已关注' : '关注'}
+              <img src={ article.aut_photo} alt="" />
+              <span className="name">{article.aut_name}</span>
+              <span className={classNames('follow', article.is_followed ? 'followed' : '')}>
+                {article.is_followed ? '已关注' : '关注'}
               </span>
             </div>
           )}

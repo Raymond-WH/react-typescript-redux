@@ -10,6 +10,9 @@ import { useEffect, useState } from 'react'
 import { getArticleInfo } from '@/store/actions/article'
 import { ArticleDetail } from '@/types/data'
 import DOMPurify from 'dompurify'
+import histhlight from 'highlight.js'
+// 要引入样式
+import 'highlight.js/styles/monokai-sublime.css'
 const Article = () => {
   const history = useHistory()
 
@@ -27,6 +30,11 @@ const Article = () => {
       SetArticle(res.data.data)
     })
   }, [id])
+
+  // 代码高亮
+  useEffect(() => { 
+    histhlight.highlightAll()
+  },[article])
   const renderArticle = () => {
     // 文章详情
     return (

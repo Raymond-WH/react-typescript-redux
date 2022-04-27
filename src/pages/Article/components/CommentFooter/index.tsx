@@ -7,10 +7,11 @@ type Props = {
   // reply 回复评论
   type?: 'normal' | 'reply'
   article: ArticleDetail
-  toggleAttitude:(attitude:number)=>void
+  toggleAttitude: (attitude: number) => void
+  toggleCollect: (collect: boolean) => void
 }
 
-const CommentFooter = ({ type = 'normal',article,toggleAttitude }: Props) => {
+const CommentFooter = ({ type = 'normal',article,toggleAttitude,toggleCollect }: Props) => {
   return (
     <div className={styles.root}>
       <div className="input-btn">
@@ -31,7 +32,9 @@ const CommentFooter = ({ type = 'normal',article,toggleAttitude }: Props) => {
             <Icon type={article.attitude===1 ? 'iconbtn_like_sel' : 'iconbtn_like2'} />
             <p>点赞</p>
           </div>
-          <div className="action-item">
+          <div className="action-item" onClick={() => { 
+            toggleCollect(article.is_collected)
+          }}>
             <Icon type={article.is_collected ? 'iconbtn_collect_sel' : 'iconbtn_collect'} />
             <p>收藏</p>
           </div>

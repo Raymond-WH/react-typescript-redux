@@ -37,3 +37,14 @@ export const likeArticle = (article_id: string) => {
 export const unLikeArticle = (article_id: string) => {
   return request.delete(`/article/likings/${article_id}`)
 }
+// 收藏文章
+export const collectArticle = (article_id: string) => { 
+  return request.post(`/article/collections`, {
+    target: article_id,
+  })
+}
+
+// 取消文章收藏
+export const unCollectArticle = (article_id: string) => {
+  return request.delete(`/article/collections/${article_id}`)
+}

@@ -8,20 +8,22 @@ import CommentItem from './components/CommentItem'
 import CommentFooter from './components/CommentFooter'
 import { useEffect, useRef, useState } from 'react'
 import {
+  collectArticle,
   followUser,
   getArticleComments,
   getArticleInfo,
   likeArticle,
+  unCollectArticle,
   unFollowUser,
   unLikeArticle,
 } from '@/store/actions/article'
-import { ArticleDetail, Comment, CommentRes } from '@/types/data'
+import { ArticleDetail, CommentRes } from '@/types/data'
 import DOMPurify from 'dompurify'
-import histhlight from 'highlight.js'
+import highlight from 'highlight.js'
 // 要引入样式
 import 'highlight.js/styles/monokai-sublime.css'
-import { highlight } from '@/utils'
-import { useDispatch } from 'react-redux'
+// import { highlight } from '@/utils'
+// import { useDispatch } from 'react-redux'
 const Article = () => {
   const history = useHistory()
 
@@ -43,10 +45,10 @@ const Article = () => {
   // 代码高亮
   useEffect(() => {
     // 忽略警告
-    histhlight.configure({
+    highlight.configure({
       ignoreUnescapedHTML: true,
     })
-    histhlight.highlightAll()
+    highlight.highlightAll()
   }, [article])
   // 控制滚动事件
   const authorRef = useRef<HTMLDivElement>(null)
@@ -91,12 +93,12 @@ const Article = () => {
       ...res.data.data,
       results: [...commentRes.results, ...res.data.data.results],
     })
-    console.log(res)
+    // console.log(res)
   }
   const hasMore = commentRes.total_count > commentRes.results.length
   // 切换关注用户
   // const [follow,setFollow] = useState(false)
-  const toggleFollow = async() => {
+  const toggleFollow = async () => {
     // 判断用户是否关注
     if (article.is_followed) {
       // 取消关注
@@ -116,16 +118,13 @@ const Article = () => {
 
   // 切换收藏
   const toggleAttitude = async (attitude: number) => {
-    console.log(attitude);
-    
+    // console.log(attitude);
+
     if (attitude === -1) {
       await likeArticle(article.art_id)
       // console.log(attitude);
-      
     } else {
       await unLikeArticle(article.art_id)
-
-    
     }
     // 修改文章态度
     SetArticle({
@@ -134,6 +133,20 @@ const Article = () => {
     })
   }
 
+  const toggleCollect = async (is_collected: boolean) => {
+    if (is_collected) {
+      // 取消收藏
+      await collectArticle(article.art_id)
+    } else {
+      // 收藏
+      await unCollectArticle(article.art_id)
+    }
+    // 修改文章收藏状态
+    SetArticle({
+      ...article,
+      is_collected: !article.is_collected,
+    })
+  }
   const renderArticle = () => {
     // 文章详情
     return (
@@ -184,7 +197,7 @@ const Article = () => {
 
           <div className="comment-list">
             {commentRes.results.map((item) => (
-              <CommentItem type="normal" key={item.com_id} comment={item}  />
+              <CommentItem type="normal" key={item.com_id} comment={item} />
             ))}
 
             <InfiniteScroll hasMore={hasMore} loadMore={loadMore} />
@@ -225,7 +238,12 @@ const Article = () => {
         {renderArticle()}
 
         {/* 底部评论栏 */}
-        <CommentFooter type='normal' article={article} toggleAttitude={ toggleAttitude}/>
+        <CommentFooter
+          type="normal"
+          article={article}
+          toggleAttitude={toggleAttitude}
+          toggleCollect={toggleCollect}
+        />
       </div>
     </div>
   )

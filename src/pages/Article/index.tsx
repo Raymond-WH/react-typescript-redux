@@ -202,7 +202,7 @@ const Article = () => {
         {renderArticle()}
 
         {/* 底部评论栏 */}
-        <CommentFooter />
+        <CommentFooter type='normal' article={ article}/>
       </div>
     </div>
   )

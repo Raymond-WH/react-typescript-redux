@@ -147,6 +147,26 @@ const Article = () => {
       is_collected: !article.is_collected,
     })
   }
+
+  const [isComment, setIsComment] = useState(false)
+  // 评论跳转
+  const commentRef = useRef<HTMLDivElement>(null)
+  const goComment = () => {
+    // console.log('ddd');
+    
+    const wrapperDOM = wrapperRef.current!
+    const commentDOM = commentRef.current!
+    if (isComment) {
+      // 跳转到评论地方
+      // console.log(isComment);
+      
+      wrapperDOM.scrollTop = commentDOM.offsetTop-50
+    } else {
+      // 跳转到顶部
+      wrapperDOM.scrollTop = 0
+    }
+    setIsComment(!isComment)
+  }
   const renderArticle = () => {
     // 文章详情
     return (
@@ -189,7 +209,7 @@ const Article = () => {
           </div>
         </div>
 
-        <div className="comment">
+        <div className="comment" ref={commentRef}>
           <div className="comment-header">
             <span>全部评论（{commentRes.results.length}）</span>
             <span>{article.like_count} 点赞</span>
@@ -206,7 +226,7 @@ const Article = () => {
       </div>
     )
   }
-
+  
   return (
     <div className={styles.root}>
       <div className="root-wrapper">
@@ -243,6 +263,7 @@ const Article = () => {
           article={article}
           toggleAttitude={toggleAttitude}
           toggleCollect={toggleCollect}
+          goComment={goComment}
         />
       </div>
     </div>

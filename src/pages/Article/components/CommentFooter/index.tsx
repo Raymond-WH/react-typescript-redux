@@ -9,9 +9,10 @@ type Props = {
   article: ArticleDetail
   toggleAttitude: (attitude: number) => void
   toggleCollect: (collect: boolean) => void
+  goComment: () => void
 }
 
-const CommentFooter = ({ type = 'normal',article,toggleAttitude,toggleCollect }: Props) => {
+const CommentFooter = ({ type = 'normal',article,toggleAttitude,toggleCollect,goComment }: Props) => {
   return (
     <div className={styles.root}>
       <div className="input-btn">
@@ -21,8 +22,10 @@ const CommentFooter = ({ type = 'normal',article,toggleAttitude,toggleCollect }:
 
       {type === 'normal' && (
         <>
-          <div className="action-item">
-            <Icon type="iconbtn_comment" />
+          <div className="action-item" onClick={() => { 
+            
+          }}>
+            <Icon type="iconbtn_comment" onClick={() => { goComment()}}/>
             <p>评论</p>
             {!!article.comm_count && <span className="bage">{article.comm_count}</span>}
           </div>

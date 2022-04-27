@@ -11,7 +11,9 @@ import {
   followUser,
   getArticleComments,
   getArticleInfo,
+  likeArticle,
   unFollowUser,
+  unLikeArticle,
 } from '@/store/actions/article'
 import { ArticleDetail, Comment, CommentRes } from '@/types/data'
 import DOMPurify from 'dompurify'
@@ -111,6 +113,27 @@ const Article = () => {
       is_followed: !article.is_followed,
     })
   }
+
+  // 切换收藏
+  const toggleAttitude = async (attitude: number) => {
+    console.log(attitude);
+    
+    if (attitude === -1) {
+      await likeArticle(article.art_id)
+      // console.log(attitude);
+      
+    } else {
+      await unLikeArticle(article.art_id)
+
+    
+    }
+    // 修改文章态度
+    SetArticle({
+      ...article,
+      attitude: attitude === -1 ? 1 : -1,
+    })
+  }
+
   const renderArticle = () => {
     // 文章详情
     return (
@@ -161,7 +184,7 @@ const Article = () => {
 
           <div className="comment-list">
             {commentRes.results.map((item) => (
-              <CommentItem type="normal" key={item.com_id} comment={item} />
+              <CommentItem type="normal" key={item.com_id} comment={item}  />
             ))}
 
             <InfiniteScroll hasMore={hasMore} loadMore={loadMore} />
@@ -202,7 +225,7 @@ const Article = () => {
         {renderArticle()}
 
         {/* 底部评论栏 */}
-        <CommentFooter type='normal' article={ article}/>
+        <CommentFooter type='normal' article={article} toggleAttitude={ toggleAttitude}/>
       </div>
     </div>
   )

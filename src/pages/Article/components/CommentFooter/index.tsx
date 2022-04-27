@@ -6,10 +6,11 @@ type Props = {
   // normal 普通评论
   // reply 回复评论
   type?: 'normal' | 'reply'
-  article:ArticleDetail
+  article: ArticleDetail
+  toggleAttitude:(attitude:number)=>void
 }
 
-const CommentFooter = ({ type = 'normal',article }: Props) => {
+const CommentFooter = ({ type = 'normal',article,toggleAttitude }: Props) => {
   return (
     <div className={styles.root}>
       <div className="input-btn">
@@ -24,7 +25,9 @@ const CommentFooter = ({ type = 'normal',article }: Props) => {
             <p>评论</p>
             {!!article.comm_count && <span className="bage">{article.comm_count}</span>}
           </div>
-          <div className="action-item">
+          <div className="action-item" onClick={() => { 
+            toggleAttitude(article.attitude)
+          }}>
             <Icon type={article.attitude===1 ? 'iconbtn_like_sel' : 'iconbtn_like2'} />
             <p>点赞</p>
           </div>

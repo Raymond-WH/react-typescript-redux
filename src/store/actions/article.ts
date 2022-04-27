@@ -26,3 +26,14 @@ export const followUser = (user_id: string) => {
 export const unFollowUser = (user_id: string) => {
   return request.delete(`/user/followings/${user_id}`)
 }
+// 对文章点赞
+export const likeArticle = (article_id: string) => {
+   return request.post(`/article/likings`, {
+     target: article_id,
+   })
+}
+
+// 取消对文章点赞
+export const unLikeArticle = (article_id: string) => {
+  return request.delete(`/article/likings/${article_id}`)
+}

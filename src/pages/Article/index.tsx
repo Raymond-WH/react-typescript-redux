@@ -24,6 +24,7 @@ import highlight from 'highlight.js'
 // 要引入样式
 import 'highlight.js/styles/monokai-sublime.css'
 import CommentInput from './components/CommentInput'
+import CommentReply from './components/CommentReply'
 // import { highlight } from '@/utils'
 // import { useDispatch } from 'react-redux'
 const Article = () => {
@@ -170,34 +171,50 @@ const Article = () => {
     setIsComment(!isComment)
   }
 
-
   // 弹层
   const [commentShow, SetCommentShow] = useState(false)
-  const hideComment = () => { 
+  const hideComment = () => {
     SetCommentShow(false)
   }
-  const showComment = () => { 
+  const showComment = () => {
     SetCommentShow(true)
   }
 
   // 发表评论
-  const addComment = async(value:string) => { 
+  const addComment = async (value: string) => {
     // console.log(value);
     // 发送请求
-   const res=  await addCommentFn(article.art_id, value)
+    const res = await addCommentFn(article.art_id, value)
     Toast.show('评论成功')
     // 关闭弹层
     hideComment()
     // 重新渲染
-    console.log(res);
-    
+    console.log(res)
+
     setCommentRes({
       ...commentRes,
+      // total_count:commentRes.total_count+1,
       results: [res.data.data.new_obj, ...commentRes.results],
-      total_count:commentRes.total_count+1
+      total_count: commentRes.total_count + 1,
     })
-     
-    
+  }
+
+  // 控制回复显示和隐藏
+  const [replyShow, setReplyShow] = useState({
+    visibile: false,
+    comment_id: '',
+  })
+  const hideReply = () => {
+    setReplyShow({
+      visibile: false,
+      comment_id: '',
+    })
+  }
+  const showReply = () => {
+    setReplyShow({
+      visibile: true,
+      comment_id: '',
+    })
   }
   const renderArticle = () => {
     // 文章详情
@@ -249,7 +266,7 @@ const Article = () => {
 
           <div className="comment-list">
             {commentRes.results.map((item) => (
-              <CommentItem type="normal" key={item.com_id} comment={item} />
+              <CommentItem showReply={ showReply} type="normal" key={item.com_id} comment={item} />
             ))}
 
             <InfiniteScroll hasMore={hasMore} loadMore={loadMore} />
@@ -304,6 +321,10 @@ const Article = () => {
             hideComment={hideComment}
             addComment={addComment}
           ></CommentInput>
+        </Popup>
+        {/* 回复的显示和隐藏 */}
+        <Popup visible={replyShow.visibile} position="right" destroyOnClose>
+          <CommentReply hideReply={hideReply}></CommentReply>
         </Popup>
       </div>
     </div>

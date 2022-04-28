@@ -11,7 +11,8 @@ type Props = {
   // origin 回复评论的原始评论，也就是对哪个评论进行回复
   // reply 回复评论
   type?: 'normal' | 'reply' | 'origin'
-  comment:Comment
+  comment: Comment
+  showReply?: (comment_id: string) => void
 }
 
 const CommentItem = ({
@@ -19,13 +20,14 @@ const CommentItem = ({
   // origin 回复评论的原始评论
   // reply 回复评论
   type = 'normal',
-  comment
+  comment,
+  showReply,
 }: Props) => {
   // 回复按钮
   const replyJSX =
     type === 'normal' ? (
-      <span className="replay">
-        { comment.reply_count} 回复
+      <span className="replay" onClick={() => showReply?.(comment.com_id)}>
+        {comment.reply_count} 回复
         <Icon type="iconbtn_right" />
       </span>
     ) : null
@@ -33,7 +35,7 @@ const CommentItem = ({
   return (
     <div className={styles.root}>
       <div className="avatar">
-        <img src={ comment.aut_photo} alt="" />
+        <img src={comment.aut_photo} alt="" />
       </div>
       <div className="comment-info">
         <div className="comment-info-header">
@@ -41,13 +43,20 @@ const CommentItem = ({
           {/* 文章评论、评论的回复 */}
           {(type === 'normal' || type === 'reply') && (
             <span className="thumbs-up">
-              { comment.like_count}
-              <Icon type={comment.is_liking ? 'iconbtn_like_sel' : 'iconbtn_like2'} />
+              {comment.like_count}
+              <Icon
+                type={comment.is_liking ? 'iconbtn_like_sel' : 'iconbtn_like2'}
+              />
             </span>
           )}
           {/* 要回复的评论 */}
           {type === 'origin' && (
-            <span className={classnames('follow', comment.is_followed ? 'followed' : '')}>
+            <span
+              className={classnames(
+                'follow',
+                comment.is_followed ? 'followed' : ''
+              )}
+            >
               {comment.is_followed ? '已关注' : '关注'}
             </span>
           )}
@@ -57,13 +66,17 @@ const CommentItem = ({
           {replyJSX}
           {/* 非评论的回复 */}
           {type !== 'reply' && (
-            <span className="comment-time">{dayjs(comment.pubdate).fromNow()}</span>
+            <span className="comment-time">
+              {dayjs(comment.pubdate).fromNow()}
+            </span>
           )}
           {/* 文章的评论 */}
           {type === 'origin' && (
             <span className="thumbs-up">
-              { comment.like_count}
-              <Icon type={comment.is_liking ? 'iconbtn_like_sel' : 'iconbtn_like2'} />
+              {comment.like_count}
+              <Icon
+                type={comment.is_liking ? 'iconbtn_like_sel' : 'iconbtn_like2'}
+              />
             </span>
           )}
         </div>

@@ -48,3 +48,11 @@ export const collectArticle = (article_id: string) => {
 export const unCollectArticle = (article_id: string) => {
   return request.delete(`/article/collections/${article_id}`)
 }
+
+// 添加评论
+export const addCommentFn = (article_id: string, content: string) => { 
+  return request.post(`/comments`, {
+    target: article_id,
+    content,
+  })
+}

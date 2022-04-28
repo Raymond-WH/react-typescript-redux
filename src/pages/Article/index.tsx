@@ -1,4 +1,4 @@
-import { NavBar, InfiniteScroll, Popup } from 'antd-mobile'
+import { NavBar, InfiniteScroll, Popup, Toast } from 'antd-mobile'
 import { useHistory, useParams } from 'react-router-dom'
 import classNames from 'classnames'
 import styles from './index.module.scss'
@@ -8,6 +8,7 @@ import CommentItem from './components/CommentItem'
 import CommentFooter from './components/CommentFooter'
 import { useEffect, useRef, useState } from 'react'
 import {
+  addCommentFn,
   collectArticle,
   followUser,
   getArticleComments,
@@ -178,6 +179,26 @@ const Article = () => {
   const showComment = () => { 
     SetCommentShow(true)
   }
+
+  // 发表评论
+  const addComment = async(value:string) => { 
+    // console.log(value);
+    // 发送请求
+   const res=  await addCommentFn(article.art_id, value)
+    Toast.show('评论成功')
+    // 关闭弹层
+    hideComment()
+    // 重新渲染
+    console.log(res);
+    
+    setCommentRes({
+      ...commentRes,
+      results: [res.data.data.new_obj, ...commentRes.results],
+      total_count:commentRes.total_count+1
+    })
+     
+    
+  }
   const renderArticle = () => {
     // 文章详情
     return (
@@ -267,7 +288,6 @@ const Article = () => {
         </NavBar>
         {/* 文章详情和评论 */}
         {renderArticle()}
-
         {/* 底部评论栏 */}
         <CommentFooter
           type="normal"
@@ -278,8 +298,12 @@ const Article = () => {
           showComment={showComment}
         />
         {/* 弹层 */}
-        <Popup visible={commentShow} position="right">
-          <CommentInput hideComment={ hideComment}></CommentInput>
+        {/* destroyOnClose关闭弹窗完成清空 */}
+        <Popup destroyOnClose visible={commentShow} position="right">
+          <CommentInput
+            hideComment={hideComment}
+            addComment={addComment}
+          ></CommentInput>
         </Popup>
       </div>
     </div>

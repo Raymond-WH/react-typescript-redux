@@ -10,12 +10,13 @@ type Props = {
   toggleAttitude: (attitude: number) => void
   toggleCollect: (collect: boolean) => void
   goComment: () => void
+  showComment:()=>void
 }
 
-const CommentFooter = ({ type = 'normal',article,toggleAttitude,toggleCollect,goComment }: Props) => {
+const CommentFooter = ({ type = 'normal',article,toggleAttitude,toggleCollect,goComment,showComment }: Props) => {
   return (
     <div className={styles.root}>
-      <div className="input-btn">
+      <div className="input-btn" onClick={() => { showComment()}}>
         <Icon type="iconbianji" />
         <span>抢沙发</span>
       </div>

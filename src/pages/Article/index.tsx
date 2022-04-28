@@ -1,4 +1,4 @@
-import { NavBar, InfiniteScroll } from 'antd-mobile'
+import { NavBar, InfiniteScroll, Popup } from 'antd-mobile'
 import { useHistory, useParams } from 'react-router-dom'
 import classNames from 'classnames'
 import styles from './index.module.scss'
@@ -22,6 +22,7 @@ import DOMPurify from 'dompurify'
 import highlight from 'highlight.js'
 // 要引入样式
 import 'highlight.js/styles/monokai-sublime.css'
+import CommentInput from './components/CommentInput'
 // import { highlight } from '@/utils'
 // import { useDispatch } from 'react-redux'
 const Article = () => {
@@ -153,19 +154,29 @@ const Article = () => {
   const commentRef = useRef<HTMLDivElement>(null)
   const goComment = () => {
     // console.log('ddd');
-    
+
     const wrapperDOM = wrapperRef.current!
     const commentDOM = commentRef.current!
     if (isComment) {
       // 跳转到评论地方
       // console.log(isComment);
-      
-      wrapperDOM.scrollTop = commentDOM.offsetTop-50
+
+      wrapperDOM.scrollTop = commentDOM.offsetTop - 50
     } else {
       // 跳转到顶部
       wrapperDOM.scrollTop = 0
     }
     setIsComment(!isComment)
+  }
+
+
+  // 弹层
+  const [commentShow, SetCommentShow] = useState(false)
+  const hideComment = () => { 
+    SetCommentShow(false)
+  }
+  const showComment = () => { 
+    SetCommentShow(true)
   }
   const renderArticle = () => {
     // 文章详情
@@ -226,7 +237,7 @@ const Article = () => {
       </div>
     )
   }
-  
+
   return (
     <div className={styles.root}>
       <div className="root-wrapper">
@@ -264,7 +275,12 @@ const Article = () => {
           toggleAttitude={toggleAttitude}
           toggleCollect={toggleCollect}
           goComment={goComment}
+          showComment={showComment}
         />
+        {/* 弹层 */}
+        <Popup visible={commentShow} position="right">
+          <CommentInput hideComment={ hideComment}></CommentInput>
+        </Popup>
       </div>
     </div>
   )

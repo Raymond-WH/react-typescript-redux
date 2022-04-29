@@ -25,6 +25,7 @@ import highlight from 'highlight.js'
 import 'highlight.js/styles/monokai-sublime.css'
 import CommentInput from './components/CommentInput'
 import CommentReply from './components/CommentReply'
+import produce from 'immer'
 // import { highlight } from '@/utils'
 // import { useDispatch } from 'react-redux'
 const Article = () => {
@@ -212,12 +213,22 @@ const Article = () => {
       comment_id: '',
     })
   }
-  const showReply = (comment_id:string) => {
+  const showReply = (comment_id: string) => {
     setReplyShow({
       visibile: true,
       comment_id,
     })
   }
+  // 让评论的数量加一
+  const addReplyCount = (comment_id: string) => {
+    setCommentRes(
+      produce((draft: CommentRes) => {
+        const obj = draft.results.find((item) => item.com_id === comment_id)
+        obj!.reply_count += 1
+      })
+    )
+  }
+
   const renderArticle = () => {
     // 文章详情
     return (
@@ -330,23 +341,13 @@ const Article = () => {
           ></CommentInput>
         </Popup>
         {/* 回复的显示和隐藏 */}
-        <Popup
-          onClick={() => {
-            console.log(
-              commentRes.results.find(
-                (item) => item.com_id === replyShow.comment_id
-              )
-            )
-          }}
-          visible={replyShow.visibile}
-          position="right"
-          destroyOnClose
-        >
+        <Popup visible={replyShow.visibile} position="right" destroyOnClose>
           <CommentReply
             comment={commentRes.results.find(
               (item) => item.com_id === replyShow.comment_id
             )}
             hideReply={hideReply}
+            addReplyCount={addReplyCount}
           ></CommentReply>
         </Popup>
       </div>

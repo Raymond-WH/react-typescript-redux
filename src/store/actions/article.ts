@@ -69,3 +69,10 @@ export const addCommentFn = (article_id: string, content: string) => {
 }
 
 
+export const addReplyFn = (comment_id: string, content: string,article_id:string) => { 
+  return request.post(`/comments`, {
+    target: comment_id,
+    content,
+    art_id:article_id,
+  })
+}

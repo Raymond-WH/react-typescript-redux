@@ -5,15 +5,18 @@ import styles from './index.module.scss'
 import { Comment, CommentRes } from '@/types/data'
 import CommentItem from '../CommentItem'
 import { useState } from 'react'
-import { getReplyComments } from '@/store/actions/article'
+import { addReplyFn, getReplyComments } from '@/store/actions/article'
 import CommentInput from '../CommentInput'
+import { useParams } from 'react-router-dom'
 type Props = {
   hideReply?: () => void
   comment?: Comment
+  addReplyCount?: (comment_id: string) => void
 }
 export default function CommentReply({
   hideReply,
   comment = {} as Comment,
+  addReplyCount
 }: Props) {
   // 显示原始评论
   console.log(comment)
@@ -44,8 +47,23 @@ export default function CommentReply({
   const hide = () => {
     seIsVisible(false)
   }
-  const addReply = (value:string) => { 
 
+  // 拿到路径里的id值
+  const { id } = useParams<{id:string}>()
+  const addReply = async(value:string) => { 
+    const res = await addReplyFn(comment.com_id, value, id)
+    console.log(res);
+    
+    // 保存到回复列表
+    setReplyList({
+      ...replyList,
+      results: [res.data.data.new_obj,...replyList.results],
+      total_count:replyList.total_count + 1
+    })
+    // 关闭弹层
+    hide()
+    // 让评论的数量加1
+    addReplyCount?.(comment.com_id)
   }
   return (
     <div className={styles.root}>

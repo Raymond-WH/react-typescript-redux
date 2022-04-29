@@ -1,4 +1,4 @@
-import { Router, Link, Route, Switch } from 'react-router-dom'
+import { Router, Link, Route, Switch, useLocation } from 'react-router-dom'
 import { Redirect } from 'react-router-dom'
 import './App.scss'
 import PrivateRoute from './components/PrivateRoute'
@@ -13,6 +13,8 @@ import SearchResult from './pages/Search/Result'
 import Article from './pages/Article'
 import KeepAlive from './components/KeepAlive'
 function App() {
+
+  // const { pathname} = useLocation()
   return (
     <Router history={history}>
       <div className="app">
@@ -27,7 +29,7 @@ function App() {
         </ul> */}
         {/* 配置路由规则 */}
 
-        <KeepAlive path='/home'>
+        <KeepAlive path="/home">
           <Layout></Layout>
         </KeepAlive>
         <Switch>
@@ -73,9 +75,11 @@ function App() {
           <Route path="/article/:id">
             <Article></Article>
           </Route>
-          <Route path="*">
-            <NotFound></NotFound>
-          </Route>
+          {history.location.pathname !== '/home' && (
+            <Route path="*">
+              <NotFound></NotFound>
+            </Route>
+          )}
         </Switch>
       </div>
     </Router>

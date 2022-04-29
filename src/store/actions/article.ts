@@ -16,6 +16,17 @@ export const getArticleComments = (article_id: string,offset?:string) => {
   })
 }
 
+// 获取文章回复评论
+export const getReplyComments = (comment_id: string, offset?: string) => {
+  return request.get<ApiResponse<CommentRes>>(`/comments`, {
+    params: {
+      type: 'c',
+      source: comment_id,
+      offset,
+    },
+  })
+}
+
 // 关注用户
 export const followUser = (user_id: string) => {
   return request.post(`/user/followings`, {
@@ -56,3 +67,5 @@ export const addCommentFn = (article_id: string, content: string) => {
     content,
   })
 }
+
+

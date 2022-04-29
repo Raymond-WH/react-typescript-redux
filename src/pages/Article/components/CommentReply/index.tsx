@@ -1,9 +1,11 @@
-import { NavBar } from 'antd-mobile'
+import { InfiniteScroll, NavBar } from 'antd-mobile'
 import CommentFooter from '../CommentFooter'
 import NoComment from '../NoComment'
 import styles from './index.module.scss'
-import { Comment } from '@/types/data'
+import { Comment, CommentRes } from '@/types/data'
 import CommentItem from '../CommentItem'
+import { useState } from 'react'
+import { getReplyComments } from '@/store/actions/article'
 type Props = {
   hideReply?: () => void
   comment?: Comment
@@ -16,6 +18,25 @@ export default function CommentReply({
   console.log(comment);
   
   // 显示评论回复
+  // 获取评论的所有回复
+  const [replyList, setReplyList] = useState<CommentRes>({
+    results: [],
+    total_count: 100,
+    last_id: '',
+    end_id:''
+  })
+
+  const hasMore = replyList.total_count > replyList.results.length
+  const loadMore = async () => { 
+    const res = await getReplyComments(comment.com_id, replyList.last_id)
+    setReplyList({
+      ...res.data.data,
+      results: [...replyList.results, ...res.data.data.results],
+      total_count:res.data.data.total_count
+    })
+    // console.log('ddddd'); 
+    
+  }
   return (
     <div className={styles.root}>
       <div className="reply-wrapper">
@@ -26,18 +47,30 @@ export default function CommentReply({
 
         {/* 原评论信息 */}
         <div className="origin-comment">
-          <CommentItem type='origin' comment={comment}></CommentItem>
+          <CommentItem type="origin" comment={comment}></CommentItem>
         </div>
 
         {/* 回复评论的列表 */}
         <div className="reply-list">
           <div className="reply-header">全部回复</div>
-
-          <NoComment />
+          {replyList.results.map((item) => {
+            return (
+              <CommentItem
+                type="reply"
+                key={item.com_id}
+                comment={item}
+              ></CommentItem>
+            )
+          })}
+          {replyList.results.length === 0 && <NoComment />}
+          <InfiniteScroll
+            hasMore={hasMore}
+            loadMore={loadMore}
+          ></InfiniteScroll>
         </div>
 
         {/* 评论工具栏，设置 type="reply" 不显示评论和点赞按钮 */}
-        <CommentFooter />
+        <CommentFooter type='reply' />
       </div>
     </div>
   )

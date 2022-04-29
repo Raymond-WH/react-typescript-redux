@@ -1,4 +1,4 @@
-import noCommentImage from '@/assets/images/none.png'
+import noCommentImage from '@/assets/none.png'
 import styles from './index.module.scss'
 
 const NoComment = () => {

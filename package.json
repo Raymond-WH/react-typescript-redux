@@ -31,6 +31,7 @@
     "redux-thunk": "^2.4.1",
     "sass": "^1.49.10",
     "socket.io-client": "^4.4.1",
+    "source-map-explorer": "^2.5.2",
     "typescript": "^4.6.3",
     "web-vitals": "^2.1.4"
   },
@@ -38,7 +39,8 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "eslintConfig": {
     "extends": [

@@ -3,12 +3,14 @@ import { TabBar } from 'antd-mobile'
 import Icon from '@/components/icon'
 import { useHistory, useLocation } from 'react-router'
 import { Route, Switch } from 'react-router-dom'
-import Home from '../Home'
-import Question from '../Question'
-import Profile from '../Profile'
-import Video from '../Video'
-import PrivateRoute from '@/components/PrivateRoute'
-import KeepAlive from '@/components/KeepAlive'
+import React, { Suspense} from 'react'
+import Home from '@/pages/Home'
+// const Home = React.lazy(() => import('../Home'))
+const Question = React.lazy(() => import('../Question'))
+const Profile = React.lazy(() => import('../Profile'))
+const Video = React.lazy(() => import('../Video'))
+const PrivateRoute = React.lazy(() => import('@/components/PrivateRoute'))
+const KeepAlive = React.lazy(() => import('@/components/KeepAlive'))
 const tabs = [
   { path: '/home', icon: 'iconbtn_home', text: '首页' },
   { path: '/home/question', icon: 'iconbtn_qa', text: '问答' },
@@ -25,48 +27,50 @@ export default function Layout() {
     // console.log(path)
 
     history.push(path)
-  }  
+  }
   return (
-    <div className={styles.root}>
-      <KeepAlive path="/home" exact>
-        <Home></Home>
-      </KeepAlive>
-      <Switch>
-        {/* <Route exact path="/home">
+    <Suspense fallback={ <div>二级路由loading..</div>}>
+      <div className={styles.root}>
+        <KeepAlive path="/home" exact>
+          <Home></Home>
+        </KeepAlive>
+        <Switch>
+          {/* <Route exact path="/home">
           <Home></Home>
         </Route> */}
-        <Route path="/home/question">
-          <Question></Question>
-        </Route>
-        <Route path="/home/video">
-          <Video></Video>
-        </Route>
-        <PrivateRoute path="/home/profile">
-          <Profile></Profile>
-        </PrivateRoute>
-      </Switch>
-      <TabBar
-        className="tab-bar"
-        onChange={onChangeRoute}
-        activeKey={location.pathname}
-      >
-        {tabs.map((item) => (
-          <TabBar.Item
-            key={item.path}
-            icon={(active) => {
-              // console.log(active)
-              if (active) {
-                // 当前tab激活
-                return <Icon type={item.icon + '_sel'}></Icon>
-              } else {
-                return <Icon type={item.icon}></Icon>
-              }
-            }}
-            // icon={<Icon type={item.icon}></Icon>}
-            title={item.text}
-          />
-        ))}
-      </TabBar>
-    </div>
+          <Route path="/home/question">
+            <Question></Question>
+          </Route>
+          <Route path="/home/video">
+            <Video></Video>
+          </Route>
+          <PrivateRoute path="/home/profile">
+            <Profile></Profile>
+          </PrivateRoute>
+        </Switch>
+        <TabBar
+          className="tab-bar"
+          onChange={onChangeRoute}
+          activeKey={location.pathname}
+        >
+          {tabs.map((item) => (
+            <TabBar.Item
+              key={item.path}
+              icon={(active) => {
+                // console.log(active)
+                if (active) {
+                  // 当前tab激活
+                  return <Icon type={item.icon + '_sel'}></Icon>
+                } else {
+                  return <Icon type={item.icon}></Icon>
+                }
+              }}
+              // icon={<Icon type={item.icon}></Icon>}
+              title={item.text}
+            />
+          ))}
+        </TabBar>
+      </div>
+    </Suspense>
   )
 }

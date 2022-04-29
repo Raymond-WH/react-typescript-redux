@@ -82,7 +82,6 @@ const Article = () => {
     }
   }, [])
 
-  // const dispatch = useDispatch()
   const [commentRes, setCommentRes] = useState<CommentRes>({
     results: [],
     total_count: 100,
@@ -92,13 +91,16 @@ const Article = () => {
 
   const loadMore = async () => {
     const res = await getArticleComments(id, commentRes.last_id)
+    console.log(res)
+
     setCommentRes({
       ...res.data.data,
       results: [...commentRes.results, ...res.data.data.results],
     })
-    // console.log(res)
+    // console.log(commentRes);
   }
-  const hasMore = commentRes.total_count > commentRes.results.length
+  // console.log(commentRes)
+  const hasMore = commentRes.results.length < commentRes.total_count
   // 切换关注用户
   // const [follow,setFollow] = useState(false)
   const toggleFollow = async () => {
@@ -163,10 +165,10 @@ const Article = () => {
       // 跳转到评论地方
       // console.log(isComment);
 
-      wrapperDOM.scrollTop = commentDOM.offsetTop - 50
+      wrapperDOM.scrollTo(0, commentDOM.offsetTop - 50)
     } else {
       // 跳转到顶部
-      wrapperDOM.scrollTop = 0
+      wrapperDOM.scrollTo(0, 0)
     }
     setIsComment(!isComment)
   }
@@ -210,10 +212,10 @@ const Article = () => {
       comment_id: '',
     })
   }
-  const showReply = () => {
+  const showReply = (comment_id:string) => {
     setReplyShow({
       visibile: true,
-      comment_id: '',
+      comment_id,
     })
   }
   const renderArticle = () => {
@@ -266,7 +268,12 @@ const Article = () => {
 
           <div className="comment-list">
             {commentRes.results.map((item) => (
-              <CommentItem showReply={ showReply} type="normal" key={item.com_id} comment={item} />
+              <CommentItem
+                showReply={showReply}
+                type="normal"
+                key={item.com_id}
+                comment={item}
+              />
             ))}
 
             <InfiniteScroll hasMore={hasMore} loadMore={loadMore} />
@@ -323,8 +330,24 @@ const Article = () => {
           ></CommentInput>
         </Popup>
         {/* 回复的显示和隐藏 */}
-        <Popup visible={replyShow.visibile} position="right" destroyOnClose>
-          <CommentReply hideReply={hideReply}></CommentReply>
+        <Popup
+          onClick={() => {
+            console.log(
+              commentRes.results.find(
+                (item) => item.com_id === replyShow.comment_id
+              )
+            )
+          }}
+          visible={replyShow.visibile}
+          position="right"
+          destroyOnClose
+        >
+          <CommentReply
+            comment={commentRes.results.find(
+              (item) => item.com_id === replyShow.comment_id
+            )}
+            hideReply={hideReply}
+          ></CommentReply>
         </Popup>
       </div>
     </div>

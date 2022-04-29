@@ -24,6 +24,9 @@ const CommentItem = ({
   showReply,
 }: Props) => {
   // 回复按钮
+
+  // console.log(comment);
+  
   const replyJSX =
     type === 'normal' ? (
       <span className="replay" onClick={() => showReply?.(comment.com_id)}>

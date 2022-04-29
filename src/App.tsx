@@ -11,6 +11,7 @@ import history from './utils/history'
 import Search from './pages/Search'
 import SearchResult from './pages/Search/Result'
 import Article from './pages/Article'
+import KeepAlive from './components/KeepAlive'
 function App() {
   return (
     <Router history={history}>
@@ -25,11 +26,15 @@ function App() {
           </li>
         </ul> */}
         {/* 配置路由规则 */}
+
+        <KeepAlive path='/home'>
+          <Layout></Layout>
+        </KeepAlive>
         <Switch>
           {/* 首页页面 */}
-          <Route path="/home">
+          {/* <Route path="/home">
             <Layout></Layout>
-          </Route>
+          </Route> */}
           {/* 登录页面 */}
           <Route path="/login">
             <Login></Login>

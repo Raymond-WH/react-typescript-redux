@@ -8,6 +8,7 @@ import Question from '../Question'
 import Profile from '../Profile'
 import Video from '../Video'
 import PrivateRoute from '@/components/PrivateRoute'
+import KeepAlive from '@/components/KeepAlive'
 const tabs = [
   { path: '/home', icon: 'iconbtn_home', text: '首页' },
   { path: '/home/question', icon: 'iconbtn_qa', text: '问答' },
@@ -27,10 +28,13 @@ export default function Layout() {
   }  
   return (
     <div className={styles.root}>
+      <KeepAlive path="/home" exact>
+        <Home></Home>
+      </KeepAlive>
       <Switch>
-        <Route exact path="/home">
+        {/* <Route exact path="/home">
           <Home></Home>
-        </Route>
+        </Route> */}
         <Route path="/home/question">
           <Question></Question>
         </Route>
